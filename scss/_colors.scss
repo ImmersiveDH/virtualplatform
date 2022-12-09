@@ -1,0 +1,65 @@
+$color_white: #fff;
+$color_black: #000;
+
+$color_text: $color_black;
+$color_page_background: $color_white;
+
+// From https://venngage.com/blog/blue-color-palettes/
+// 3. Orange + Honey Yellow + Prussian Blue Color Palette
+//
+
+$color_orange: #fb8500;
+$color_yellow_honey: #ffb703;
+$color_blue_dark: #023047;
+$color_blue_bright: #219ebc;
+$color_blue_light: #8ecae6;
+
+
+$color_h1: $color_text;
+$color_h2: $color_text;
+$color_h3: $color_text;
+$color_h4: $color_text;
+$color_h5: $color_text;
+$color_h6: $color_text;
+
+// Bar across the top of the page, above the main header: $color_text;
+$color_header_top_text: $color_text;
+$color_header_top_links: $color_text;
+$color_header_top_background: $color_text;
+
+// The main header, between the top bar and the horizontal main menu: $color_text;
+$color_header_text: $color_text;
+$color_header_links: $color_text;
+$color_header_background: $color_text;
+
+// Page footer at bottom of pages.
+$color_footer_text: $color_text;
+$color_footer_link: $color_text;
+$color_footer_link_visited: $color_footer_link;
+$color_footer_link_active: $color_footer_link;
+$color_footer_link_focus: $color_footer_link_active;
+$color_footer_link_hover: $color_footer_link_active;
+$color_footer_background: $color_text;
+
+// Sidebar blocks: $color_text;
+$color_aside_text: $color_text;
+$color_aside_heading: $color_text;
+$color_aside_links: $color_text;
+$color_aside_background: $color_text;
+$color_aside_border: $color_text;
+
+
+$button_primary_color: $color_text;
+$button_primary_background: $color_text;
+$button_primary_active_color: $color_text;
+$button_primary_active_background: $color_text;
+
+$button_secondary_color: $color_text;
+$button_secondary_background: $color_text;
+$button_secondary_active_color: $color_text;
+$button_secondary_active_background: $color_text;
+
+$button_disabled_color: $color_text;
+$button_disabled_background: $color_text;
+$button_disabled_active_color: $color_text;
+$button_disabled_active_background: $color_text;

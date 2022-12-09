@@ -1,0 +1,135 @@
+// Sub theme styling.
+@import 'variables_drupal';
+
+// Bootstrap overriden variables.
+// @see https://getbootstrap.com/docs/5.2/customize/sass/#variable-defaults.
+@import 'variables_bootstrap';
+
+// Include bootstrap.
+@import '../../bootstrap5/scss/style';
+
+@import 'colors';
+@import 'typography';
+@import 'mixins';
+
+body {
+  font-family: $font_body;
+}
+
+//////////////////////////////
+// START board editing page //
+//////////////////////////////
+
+#node-board-edit-form {
+#edit-body-wrapper,
+#edit-path-wrapper,
+  .form-type-vertical-tabs {
+    display: none;
+  }
+
+  // weirdly, the first header on the collapsible icon reference list
+  // doesn't show up if we don't do this.
+  .invalid-feedback {
+    display: block;
+  }
+
+}
+// The icon IEF disappears on /node/add/board for some reason, unless we do this:
+#edit-field-icon-wrapper {
+
+}
+
+#edit-field-icon {
+  > legend {
+    display: none;
+  }
+
+  > summary {
+    display: block;
+  }
+
+  .fieldset-wrapper {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+
+
+
+// the original column of inline entity field items
+#field-icon-values {
+  .draggable {
+    &.highlighted {
+      background-color: beige;
+    }
+  }
+}
+
+// The draggable grid we replaced the list of IEF icon references with:
+#draggable-grid {
+
+}
+
+// .draggable-icon {
+//   max-width: 12.5%;
+//   display: block;
+//   height: 0;
+//   padding-bottom: 12.5%;
+//   background-size: contain;
+//   background-position: center;
+//   background-repeat: no-repeat;
+//
+//   img {
+//     width: 100%;
+//     max-height:100%;
+//
+//   }
+// }
+
+
+// todo: reinitialize when resizing to always have the same number of columns.
+#draggable-grid {
+  // overflow: hidden;
+  // margin: 10px auto;
+  // width: 500px;
+  border: 1px solid #ccc;
+  width: 100%;
+  position: relative;
+}
+
+.draggable-icon {
+  width: 12.5%;
+  text-align: center;
+  color: #555;
+  background: #ddd;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  cursor: grab;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:dragging {
+    cursor: grabbing;
+  }
+}
+
+// .draggable-icon:active {
+//   cursor: grabbing;
+// }
+//
+// .drag-start {
+//   opacity: 0.8;
+// }
+//
+// .drag-enter {
+//   opacity: 0.5;
+//   transform: scale(0.9);
+// }
+
+
+////////////////////////////
+// END board editing page //
+////////////////////////////

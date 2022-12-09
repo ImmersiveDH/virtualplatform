@@ -1,0 +1,14 @@
+global-styling:
+  css:
+    theme:
+      libraries/jquery-gridly/stylesheets/jquery.gridly.css: {}
+      css/style.css: {}
+  js:
+    libraries/jquery-gridly/javascripts/jquery.gridly.js: {}
+    js/hide_id_on_autocomplete_fields.js: {}
+    js/virtualplatform.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
+    - core/drupalSettings
