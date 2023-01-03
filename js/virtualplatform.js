@@ -1,4 +1,16 @@
 (function ($, Drupal, once) {
+  // Drupal.behaviors.custom_redirect = {
+  //   attach: function() {
+  //     // Replace he form id and the select id in selecotor below.
+  //     $("form.node-icon-form").change(function(e) {
+  //       e.stopPropagation();
+  //       // Path where you want to redirect.
+  //       // var redirect_url = '';
+  //       // window.location.pathname = redirect_url;
+  //     });
+  //   }
+  // };
+
   $(document).ready(function() {
     console.log("Loaded virtual platform.");
 
@@ -10,7 +22,7 @@
     ///////////////////////////
     // Start draggable grid. //
     ///////////////////////////
-    $('#edit-field-icon-wrapper').after('<div id="draggable-grid" class="gridly"></div>');
+    $('#edit-field-icon-wrapper').after('<div id="draggable-grid" class="gridly"><img src=""></div>');
 
 
     // identify an element to observe
@@ -28,18 +40,6 @@
       observer.observe(elementToObserve, {subtree: true, childList: true});
     }
 
-    // function reorderDraggableList() {
-    //   var num_icons_in_list = $('#draggable-grid .draggable-icon').length;
-    //
-    //   $('#draggable-grid .draggable-icon').each(function() {
-    //     var current_index = $(this).index();
-    //     console.log("current_index: " + current_index);
-    //
-    //     var original_index = $(this).find("img").data('originalOrder');
-    //     console.log("originalOrder: " + original_index);
-    //     $('#edit-field-icon-entities-' + original_index + '-delta').val(current_index).change();
-    //   });
-    // }
     function checkIfInIframe() {
       if ( window.location !== window.parent.location ) {
         $('body').addClass('iframe');
@@ -78,26 +78,7 @@
       var reordered = function($grid_icons) {
         // Called after the drag and drop ends with the elements in their ending position.
         console.log("Reordered.");
-        // console.log($elements);
 
-        // reorderDraggableList();
-        // var num_icons_in_list = $('#draggable-grid .draggable-icon').length;
-        // $('#draggable-grid .draggable-icon').each(function() {
-        //   var current_index = $(this).index();
-        //   console.log("current_index: " + current_index);
-
-        //   var original_index = $(this).find("img").data('originalOrder');
-        //   console.log("originalOrder: " + original_index);
-        //   $('#edit-field-icon-entities-' + original_index + '-delta').val(current_index).change();
-        // });
-
-        // var count = 0;
-        // for (board_icon in $grid_icons) {
-        //   console.log(board_icon);
-        //   // var img_url = board_icon.firstChild.currentSrc;
-        //   // console.log(count + ": " + img_url);
-        //   count++;
-        // }
         $grid_icons.each(function(count) {
           // console.log($grid_icons[count].firstChild);
 
@@ -107,23 +88,62 @@
           // console.log("originalOrder: " + current_icon_original_order);
           $('#edit-field-icon-entities-' + current_icon_original_order + '-delta').val(count).change();
         });
-
-
       }
-
-      // console.log(reordered.Prototype);
 
 
       // Initialize Gridly
-      $('.gridly').gridly({
-        base: 60, // px
-        gutter: 0, // px
-        columns: 8
+      function initGridly() {
+        // first add them up.
+       //  var num_icons = $('.draggable-icon').length;
+       //  while (num_icons < 32) {
+       //   $('.gridly').append('<div class="draggable-icon not-draggable"></div>');
+       //   num_icons++;
+       // }
+
+        var grid_columns = 8;
+        var max_width_total = $('#draggable-grid').width();
+        var max_width_individual = max_width_total / grid_columns;
+
+        $('.gridly').gridly({
+          base: max_width_individual, // px
+          gutter: 0, // px
+          columns: grid_columns
+        });
+
+        // we want to reset the grid height every time or else it runs into trouble when we resize.
+        $('.draggable-icon').height(max_width_individual);
+        $('.gridly').css('height', max_width_total / 2);
+
+        $('.gridly').gridly({
+          callbacks: { reordering: reordering , reordered: reordered }
+        });
+      }
+      initGridly();
+
+      // Resize the height of icons of the displayed board itself.
+      function initBoardIcons() {
+        var grid_columns = 8;
+        var max_width_total = $('#block-views-block-icons-on-this-board-block-1').width();
+        var max_width_individual = max_width_total / grid_columns;
+        $('#block-views-block-icons-on-this-board-block-1 .views-row').height(max_width_individual);
+      }
+      initBoardIcons();
+
+      $(window).resize(function() {
+        initGridly();
+        initBoardIcons();
       });
 
-      $('.gridly').gridly({
-        callbacks: { reordering: reordering , reordered: reordered }
-      });
+
+      if ($('#draggable-grid-after').length < 1) {
+        $('#draggable-grid').after('<div id="draggable-grid-after"></div>');
+        var i = 0;
+        while (i < 16) {
+          $('#draggable-grid-after').append('<div class="non-draggable-grid-item"></div>');
+          i++;
+        }
+      }
+
 
       // $(document).on("click", ".gridly .delete", function(event) {
       //   var $this;
@@ -151,9 +171,6 @@
     }
 
     initializeIconGrid();
-
-
-
 
   });
 })(jQuery, Drupal, once);

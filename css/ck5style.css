@@ -11030,14 +11030,55 @@ a > .ck-content code {
   background: #ddd;
   border: 1px solid #ccc;
   box-sizing: border-box;
-  cursor: grab;
-  user-select: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: grab;
+  user-select: none;
 }
 .ck-content .draggable-icon:dragging {
   cursor: grabbing;
+}
+.ck-content .gridly,
+.ck-content .gridly > :not(.dragging) {
+  transition: none !important;
+}
+.ck-content #block-views-block-icons-on-this-board-block-1 .view-content {
+  display: block;
+  width: 100%;
+  background-size: 12.5% 25%;
+  background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
+}
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row {
+  width: 12.5%;
+  text-align: center;
+  color: #555;
+  background: #ddd;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: left;
+  height: 12.5%;
+}
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-title {
+  display: none;
+}
+.ck-content .tabs a {
+  color: #219ebc;
+  text-decoration: none;
+}
+.ck-content .tabs a:link, .ck-content .tabs a:visited {
+  color: #219ebc;
+  text-decoration: none;
+}
+.ck-content .tabs a:active, .ck-content .tabs a:focus, .ck-content .tabs a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+.ck-content #footer {
+  padding-bottom: 100px;
 }
 
 /*# sourceMappingURL=ck5style.css.map */

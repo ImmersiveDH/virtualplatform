@@ -1,0 +1,49 @@
+@mixin link($color, $color_hover) {
+  a {
+    color: $color;
+
+    &:link,
+    &:visited {
+      color: $color;
+    }
+
+    &:active,
+    &:focus,
+    &:hover {
+      color: $color_hover;
+    }
+  }
+}
+
+@mixin link_no_underline($color, $color_hover) {
+  a {
+    color: $color;
+    text-decoration: none;
+
+    &:link,
+    &:visited {
+      color: $color;
+      text-decoration: none;
+    }
+
+    &:active,
+    &:focus,
+    &:hover {
+      color: $color_hover;
+      text-decoration: none;
+    }
+  }
+}
+
+
+@mixin icon_tile() {
+  width: 12.5%;
+  text-align: center;
+  color: #555;
+  background: #ddd;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

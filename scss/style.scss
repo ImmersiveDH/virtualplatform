@@ -99,21 +99,20 @@ body {
 }
 
 .draggable-icon {
-  width: 12.5%;
-  text-align: center;
-  color: #555;
-  background: #ddd;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+  @include icon_tile();
   cursor: grab;
   user-select: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   &:dragging {
     cursor: grabbing;
   }
+}
+
+// This is to fix a bunch of window resizing nonsense bugs;
+// If we rely on Gridly's defaults, the window resizer can get the wrong height.
+.gridly,
+.gridly > :not(.dragging) {
+  transition: none !important;
 }
 
 // .draggable-icon:active {
@@ -128,8 +127,39 @@ body {
 //   opacity: 0.5;
 //   transform: scale(0.9);
 // }
-
-
 ////////////////////////////
 // END board editing page //
 ////////////////////////////
+
+
+// start board display page
+#block-views-block-icons-on-this-board-block-1 {
+  .view-content {
+    display: block;
+    width: 100%;
+    background-size: 12.5% 25%;
+    background-image:
+      linear-gradient(to right, grey 1px, transparent 1px),
+      linear-gradient(to bottom, grey 1px, transparent 1px);
+  }
+  .views-row {
+    @include icon-tile();
+    float: left;
+    height: 12.5%;
+
+    .views-field-title {
+      display: none;
+    }
+  }
+}
+
+// end board display page
+
+
+.tabs {
+  @include link_no_underline($color_tab, $color_tab_hover);
+}
+
+#footer {
+  padding-bottom: 100px;
+}
