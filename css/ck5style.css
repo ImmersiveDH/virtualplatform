@@ -11015,6 +11015,23 @@ a > .ck-content code {
   margin: 0;
   padding: 0;
 }
+.ck-content .field-multiple-drag {
+  display: none;
+}
+.ck-content a.tabledrag-handle .handle {
+  height: 24px;
+}
+.ck-content tr.ief-row-entity td[colspan="2"], .ck-content tr.ief-row-entity td[colspan="3"], .ck-content tr.ief-row-entity td[colspan="4"], .ck-content tr.ief-row-entity td[colspan="5"], .ck-content tr.ief-row-entity td[colspan="6"], .ck-content tr.ief-row-entity td[colspan="7"] {
+  display: block;
+}
+.ck-content .field--name-field-attribution .filter-wrapper,
+.ck-content .field--name-uid,
+.ck-content .field--name-created,
+.ck-content .field--name-promote,
+.ck-content .field--name-sticky,
+.ck-content .field--name-path {
+  display: none;
+}
 .ck-content #field-icon-values .draggable.highlighted {
   background-color: beige;
 }
@@ -11024,7 +11041,6 @@ a > .ck-content code {
   position: relative;
 }
 .ck-content .draggable-icon {
-  width: 12.5%;
   text-align: center;
   color: #555;
   background: #ddd;
@@ -11035,13 +11051,31 @@ a > .ck-content code {
   justify-content: center;
   cursor: grab;
   user-select: none;
+  width: 150px;
+  height: 150px;
 }
 .ck-content .draggable-icon:dragging {
   cursor: grabbing;
 }
+.ck-content .draggable-icon .edit {
+  background-color: black;
+  color: white;
+  padding: 5px;
+  opacity: 0;
+  position: absolute;
+  z-index: 100;
+  right: 0;
+  top: 0;
+}
+.ck-content .draggable-icon:focus .edit, .ck-content .draggable-icon:hover .edit {
+  opacity: 1;
+}
 .ck-content .gridly,
 .ck-content .gridly > :not(.dragging) {
   transition: none !important;
+}
+.ck-content .gridly {
+  height: 600px;
 }
 .ck-content #block-views-block-icons-on-this-board-block-1 .view-content {
   display: block;
@@ -11050,7 +11084,6 @@ a > .ck-content code {
   background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 .ck-content #block-views-block-icons-on-this-board-block-1 .views-row {
-  width: 12.5%;
   text-align: center;
   color: #555;
   background: #ddd;

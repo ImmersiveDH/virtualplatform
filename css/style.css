@@ -12849,6 +12849,27 @@ body {
   padding: 0;
 }
 
+.field-multiple-drag {
+  display: none;
+}
+
+a.tabledrag-handle .handle {
+  height: 24px;
+}
+
+tr.ief-row-entity td[colspan="2"], tr.ief-row-entity td[colspan="3"], tr.ief-row-entity td[colspan="4"], tr.ief-row-entity td[colspan="5"], tr.ief-row-entity td[colspan="6"], tr.ief-row-entity td[colspan="7"] {
+  display: block;
+}
+
+.field--name-field-attribution .filter-wrapper,
+.field--name-uid,
+.field--name-created,
+.field--name-promote,
+.field--name-sticky,
+.field--name-path {
+  display: none;
+}
+
 #field-icon-values .draggable.highlighted {
   background-color: beige;
 }
@@ -12860,7 +12881,6 @@ body {
 }
 
 .draggable-icon {
-  width: 12.5%;
   text-align: center;
   color: #555;
   background: #ddd;
@@ -12871,14 +12891,33 @@ body {
   justify-content: center;
   cursor: grab;
   user-select: none;
+  width: 150px;
+  height: 150px;
 }
 .draggable-icon:dragging {
   cursor: grabbing;
+}
+.draggable-icon .edit {
+  background-color: black;
+  color: white;
+  padding: 5px;
+  opacity: 0;
+  position: absolute;
+  z-index: 100;
+  right: 0;
+  top: 0;
+}
+.draggable-icon:focus .edit, .draggable-icon:hover .edit {
+  opacity: 1;
 }
 
 .gridly,
 .gridly > :not(.dragging) {
   transition: none !important;
+}
+
+.gridly {
+  height: 600px;
 }
 
 #block-views-block-icons-on-this-board-block-1 .view-content {
@@ -12888,7 +12927,6 @@ body {
   background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 #block-views-block-icons-on-this-board-block-1 .views-row {
-  width: 12.5%;
   text-align: center;
   color: #555;
   background: #ddd;

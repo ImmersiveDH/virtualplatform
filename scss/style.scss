@@ -19,7 +19,6 @@ body {
 //////////////////////////////
 // START board editing page //
 //////////////////////////////
-
 #node-board-edit-form {
 #edit-body-wrapper,
 #edit-path-wrapper,
@@ -55,6 +54,47 @@ body {
 }
 
 
+// cleaning up the inline entity form editor
+// hide the drag handle.
+.field-multiple-drag {
+  display: none;
+}
+
+
+// fix cut off handles.
+a.tabledrag-handle .handle {
+  height: 24px;
+}
+
+// hide the default ief form
+#edit-field-icon-wrapper .tabledrag-toggle-weight-wrapper,
+#edit-field-icon-wrapper thead,
+.ief-form-bottom legend,
+tr.ief-row-entity td {
+  // display: none;
+}
+
+tr.ief-row-entity td {
+  &[colspan="2"],
+  &[colspan="3"],
+  &[colspan="4"],
+  &[colspan="5"],
+  &[colspan="6"],
+  &[colspan="7"] {
+    display: block;
+  }
+}
+
+// hide admin-only fields anyway.
+.field--name-field-attribution .filter-wrapper, //text format selector
+.field--name-uid, // author name
+.field--name-created, // publishing date
+.field--name-promote, // promote to front page
+.field--name-sticky, // sticky at top of lists
+.field--name-path { // URL/path
+  display: none;
+}
+// End hiding default IEF form.
 
 
 // the original column of inline entity field items
@@ -67,27 +107,6 @@ body {
 }
 
 // The draggable grid we replaced the list of IEF icon references with:
-#draggable-grid {
-
-}
-
-// .draggable-icon {
-//   max-width: 12.5%;
-//   display: block;
-//   height: 0;
-//   padding-bottom: 12.5%;
-//   background-size: contain;
-//   background-position: center;
-//   background-repeat: no-repeat;
-//
-//   img {
-//     width: 100%;
-//     max-height:100%;
-//
-//   }
-// }
-
-
 // todo: reinitialize when resizing to always have the same number of columns.
 #draggable-grid {
   // overflow: hidden;
@@ -100,11 +119,35 @@ body {
 
 .draggable-icon {
   @include icon_tile();
+  // position: relative;
   cursor: grab;
   user-select: none;
 
+  width: 150px;
+  height: 150px;
+
   &:dragging {
     cursor: grabbing;
+  }
+
+  .edit {
+    background-color: black;
+    color: white;
+    padding: 5px;
+    opacity: 0;
+
+    position: absolute;
+    z-index: 100;
+    right: 0;
+    top: 0;
+  }
+
+  &:focus,
+  &:hover {
+    .edit {
+      opacity: 1;
+
+    }
   }
 }
 
@@ -113,6 +156,9 @@ body {
 .gridly,
 .gridly > :not(.dragging) {
   transition: none !important;
+}
+.gridly {
+  height: 600px;
 }
 
 // .draggable-icon:active {
@@ -162,4 +208,40 @@ body {
 
 #footer {
   padding-bottom: 100px;
+}
+
+///////////////////////////////
+// Start list of icons (/icons)
+///////////////////////////////
+.view-icons {
+  .views-field-field-image {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      max-width: 150px;
+    }
+  }
+}
+
+
+//////////////////
+// admin features
+//////////////////
+
+// /icon page
+// hide the "Display in the public item list" column in the view.
+body.path-icons {
+  .views-field-field-public {
+    display: none;
+  }
+
+  // hide the view filter for "Display in the public icon list"
+  .form-item-field-public-value {
+    display: none;
+  }
+
+  &.
 }

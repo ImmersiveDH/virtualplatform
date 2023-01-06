@@ -37,12 +37,12 @@
 
 
 @mixin icon_tile() {
-  width: 12.5%;
-  text-align: center;
+  // width: 12.5%;
   color: #555;
   background: #ddd;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
