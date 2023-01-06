@@ -10994,6 +10994,46 @@ a > .ck-content code {
 .ck-content code {
   overflow-y: auto;
 }
+.ck-content h2, .ck-content .h2,
+.ck-content h3,
+.ck-content .h3,
+.ck-content h4,
+.ck-content .h4,
+.ck-content h5,
+.ck-content .h5,
+.ck-content h6,
+.ck-content .h6 {
+  color: #000;
+}
+.ck-content h1, .ck-content .h1 {
+  color: #000;
+  font-family: "Jost", sans-serif;
+}
+.ck-content h2, .ck-content .h2 {
+  color: #000;
+  font-family: "Jost", sans-serif;
+  margin-top: 1em;
+}
+.ck-content h3, .ck-content .h3 {
+  color: #000;
+  font-family: "Jost", sans-serif;
+  margin-top: 1em;
+}
+.ck-content h4, .ck-content .h4 {
+  color: #000;
+  font-family: "Jost", sans-serif;
+  margin-top: 1em;
+}
+.ck-content h5, .ck-content .h5 {
+  color: #000;
+  font-family: "Jost", sans-serif;
+  margin-top: 1em;
+}
+.ck-content h6, .ck-content .h6 {
+  color: #000;
+  font-family: "Jost", sans-serif;
+  margin-top: 1em;
+}
 .ck-content body {
   font-family: "Jost", sans-serif;
 }
@@ -11041,11 +11081,11 @@ a > .ck-content code {
   position: relative;
 }
 .ck-content .draggable-icon {
-  text-align: center;
   color: #555;
   background: #ddd;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11084,11 +11124,11 @@ a > .ck-content code {
   background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 .ck-content #block-views-block-icons-on-this-board-block-1 .views-row {
-  text-align: center;
   color: #555;
   background: #ddd;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11112,6 +11152,25 @@ a > .ck-content code {
 }
 .ck-content #footer {
   padding-bottom: 100px;
+}
+.ck-content .view-icons td.views-field-field-image {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ck-content .view-icons td.views-field-field-image img {
+  max-width: 150px;
+}
+.ck-content body.path-icons .views-field-field-public,
+.ck-content body.path-icons .form-item-field-public-value {
+  display: none;
+}
+.ck-content body.path-icons.admin .views-field-field-public {
+  display: table-cell;
+}
+.ck-content body.path-icons.admin .form-item-field-public-value {
+  display: block;
 }
 
 /*# sourceMappingURL=ck5style.css.map */

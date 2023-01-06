@@ -83,7 +83,20 @@
       $(".fieldset-legend:contains(Add content item)").text("Add icon");
       $(".ief-form-bottom label:contains(Content item)").text("Icon name");
 
+      // add a label to "create an icon".
+      // ief-form
+
     }
+
+
+    // make links in /icons view sort taxonomy terms in the /icons view instead of the default taxonomy term view.
+    //https://virtual.wintersandassociates.com/icons?title=&tid=Flaticon+Animal+Pack&field_public_value=All
+    $('.views-field-term-node-tid a').click(function(e) {
+      e.preventDefault();
+      var this_term = $(this).text();
+      var current_url = window.location.href.split('?')[0];
+      window.location = current_url + '?tid=' + this_term.replace(/ /g, '+');
+    });
 
 
     // function checkIfInIframe() {

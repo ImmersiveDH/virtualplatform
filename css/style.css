@@ -12825,6 +12825,53 @@ code {
   overflow-y: auto;
 }
 
+h2, .h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+  color: #000;
+}
+
+h1, .h1 {
+  color: #000;
+  font-family: "Jost", sans-serif;
+}
+
+h2, .h2 {
+  color: #000;
+  font-family: "Jost", sans-serif;
+  margin-top: 1em;
+}
+
+h3, .h3 {
+  color: #000;
+  font-family: "Jost", sans-serif;
+  margin-top: 1em;
+}
+
+h4, .h4 {
+  color: #000;
+  font-family: "Jost", sans-serif;
+  margin-top: 1em;
+}
+
+h5, .h5 {
+  color: #000;
+  font-family: "Jost", sans-serif;
+  margin-top: 1em;
+}
+
+h6, .h6 {
+  color: #000;
+  font-family: "Jost", sans-serif;
+  margin-top: 1em;
+}
+
 body {
   font-family: "Jost", sans-serif;
 }
@@ -12881,11 +12928,11 @@ tr.ief-row-entity td[colspan="2"], tr.ief-row-entity td[colspan="3"], tr.ief-row
 }
 
 .draggable-icon {
-  text-align: center;
   color: #555;
   background: #ddd;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12927,11 +12974,11 @@ tr.ief-row-entity td[colspan="2"], tr.ief-row-entity td[colspan="3"], tr.ief-row
   background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 #block-views-block-icons-on-this-board-block-1 .views-row {
-  text-align: center;
   color: #555;
   background: #ddd;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12957,6 +13004,27 @@ tr.ief-row-entity td[colspan="2"], tr.ief-row-entity td[colspan="3"], tr.ief-row
 
 #footer {
   padding-bottom: 100px;
+}
+
+.view-icons td.views-field-field-image {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.view-icons td.views-field-field-image img {
+  max-width: 150px;
+}
+
+body.path-icons .views-field-field-public,
+body.path-icons .form-item-field-public-value {
+  display: none;
+}
+body.path-icons.admin .views-field-field-public {
+  display: table-cell;
+}
+body.path-icons.admin .form-item-field-public-value {
+  display: block;
 }
 
 /*# sourceMappingURL=style.css.map */

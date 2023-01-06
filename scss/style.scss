@@ -214,7 +214,7 @@ tr.ief-row-entity td {
 // Start list of icons (/icons)
 ///////////////////////////////
 .view-icons {
-  .views-field-field-image {
+  td.views-field-field-image {
     text-align: center;
     display: flex;
     align-items: center;
@@ -232,16 +232,17 @@ tr.ief-row-entity td {
 //////////////////
 
 // /icon page
-// hide the "Display in the public item list" column in the view.
 body.path-icons {
-  .views-field-field-public {
+  .views-field-field-public, // hide the "Display in the public item list" column in the view.
+  .form-item-field-public-value {   // hide the view filter for "Display in the public icon list"
     display: none;
   }
-
-  // hide the view filter for "Display in the public icon list"
-  .form-item-field-public-value {
-    display: none;
+  &.admin {
+    .views-field-field-public {
+      display: table-cell;
+    }
+    .form-item-field-public-value {
+      display: block;
+    }
   }
-
-  &.
 }

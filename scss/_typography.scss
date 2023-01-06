@@ -7,3 +7,42 @@ $font_h3: $font_body;
 $font_h4: $font_body;
 $font_h5: $font_body;
 $font_h6: $font_body;
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $color_text;
+}
+
+h1 {
+  color: $color_h1;
+  font-family: $font_h1;
+}
+h2 {
+  color: $color_h2;
+  font-family: $font_h2;
+  margin-top: 1em;
+}
+h3 {
+  color: $color_h3;
+  font-family: $font_h3;
+  margin-top: 1em;
+}
+h4 {
+  color: $color_h4;
+  font-family: $font_h4;
+  margin-top: 1em;
+
+}
+h5 {
+  color: $color_h5;
+  font-family: $font_h5;
+  margin-top: 1em;
+}
+h6 {
+  color: $color_h6;
+  font-family: $font_h6;
+  margin-top: 1em;
+}
