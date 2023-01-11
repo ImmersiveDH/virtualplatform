@@ -11008,11 +11008,13 @@ a > .ck-content code {
 .ck-content h1, .ck-content .h1 {
   color: #000;
   font-family: "Jost", sans-serif;
+  border-bottom: 4px solid #000;
 }
 .ck-content h2, .ck-content .h2 {
   color: #000;
   font-family: "Jost", sans-serif;
   margin-top: 1em;
+  border-bottom: 4px solid #000;
 }
 .ck-content h3, .ck-content .h3 {
   color: #000;
@@ -11036,6 +11038,49 @@ a > .ck-content code {
 }
 .ck-content body {
   font-family: "Jost", sans-serif;
+}
+.ck-content body.full-screen-preview .container {
+  width: 100%;
+  max-width: 100%;
+}
+.ck-content body.full-screen-preview header,
+.ck-content body.full-screen-preview footer,
+.ck-content body.full-screen-preview nav,
+.ck-content body.full-screen-preview aside {
+  display: none;
+}
+.ck-content body.full-screen-preview #block-views-block-icons-on-this-board-block-1 {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+.ck-content header {
+  border-bottom: 1px solid gray;
+  margin-bottom: 2em;
+}
+.ck-content .navbar-brand {
+  margin-left: 0.5rem;
+}
+.ck-content nav.navbar > .container {
+  display: block;
+}
+.ck-content .region-nav-branding {
+  width: 100%;
+  display: flex;
+}
+.ck-content .region-nav-branding .navigation {
+  flex-grow: 2;
+}
+.ck-content .region-nav-branding .navigation .nav, .ck-content .region-nav-branding .navigation .media-library-view--widget .view-header, .ck-content .media-library-view--widget .region-nav-branding .navigation .view-header {
+  float: right;
+  font-size: 0.9em;
+}
+.ck-content .region-nav-main {
+  width: 100%;
 }
 .ck-content #node-board-edit-form #edit-body-wrapper,
 .ck-content #node-board-edit-form #edit-path-wrapper,
@@ -11133,7 +11178,12 @@ a > .ck-content code {
   align-items: center;
   justify-content: center;
   float: left;
-  height: 12.5%;
+  width: 12.5%;
+}
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row:after {
+  padding-bottom: 100%;
+  content: "";
+  display: block;
 }
 .ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-title {
   display: none;
@@ -11147,8 +11197,12 @@ a > .ck-content code {
   text-decoration: none;
 }
 .ck-content .tabs a:active, .ck-content .tabs a:focus, .ck-content .tabs a:hover {
-  color: #fff;
+  color: #023047;
   text-decoration: none;
+}
+.ck-content .nav-link .nav-link, .ck-content .media-library-view--widget .view-header a .nav-link, .ck-content .nav-link .media-library-view--widget .view-header a, .ck-content .media-library-view--widget .view-header .nav-link a, .ck-content .media-library-view--widget .view-header a a {
+  border: 0;
+  padding: 0;
 }
 .ck-content #footer {
   padding-bottom: 100px;
@@ -11158,9 +11212,19 @@ a > .ck-content code {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 150px;
+  height: 150px;
 }
 .ck-content .view-icons td.views-field-field-image img {
-  max-width: 150px;
+  max-width: 100%;
+}
+@media (min-width: 992px) {
+  .ck-content .node-form {
+    margin-left: 0;
+  }
+}
+.ck-content .region-sidebar-second .block:first-child h2, .ck-content .region-sidebar-second .block:first-child .h2 {
+  margin-top: 0;
 }
 .ck-content body.path-icons .views-field-field-public,
 .ck-content body.path-icons .form-item-field-public-value {

@@ -14,7 +14,68 @@
 
 body {
   font-family: $font_body;
+
+  &.full-screen-preview {
+    .container {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    header,
+    footer,
+    // div,
+    nav,
+    aside {
+      display: none;
+    }
+
+    #block-views-block-icons-on-this-board-block-1 {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 100;
+    }
+  }
 }
+
+// START header
+header {
+  border-bottom: 1px solid $color_grey;
+  margin-bottom: 2em;
+}
+
+// Logo and site title
+.navbar-brand {
+  margin-left: 0.5rem; // copied from the main menu settings in the Bootstrap parent theme.
+}
+
+nav.navbar > .container {
+  display: block;
+}
+
+// user menu (top right)
+.region-nav-branding {
+  width: 100%;
+  display: flex;
+
+  .navigation {
+    flex-grow: 2;
+    // text-align: right;
+    .nav {
+      float: right;
+      font-size: 0.9em;
+    }
+  }
+}
+
+// Main menu
+.region-nav-main {
+  width: 100%;
+}
+
 
 //////////////////////////////
 // START board editing page //
@@ -177,8 +238,23 @@ tr.ief-row-entity td {
 // END board editing page //
 ////////////////////////////
 
-
+///////////////////////////
 // start board display page
+///////////////////////////
+#block-fullscreenboardbutton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  
+  button,
+  .button,
+  .btn,
+  .btn-primary {
+
+  }
+}
+
 #block-views-block-icons-on-this-board-block-1 {
   .view-content {
     display: block;
@@ -190,8 +266,17 @@ tr.ief-row-entity td {
   }
   .views-row {
     @include icon-tile();
+
     float: left;
-    height: 12.5%;
+    width: 12.5%;
+
+    &:after {
+      padding-bottom: 100%;
+      content: "";
+      display: block;
+    }
+
+
 
     .views-field-title {
       display: none;
@@ -206,6 +291,15 @@ tr.ief-row-entity td {
   @include link_no_underline($color_tab, $color_tab_hover);
 }
 
+.nav-link .nav-link {
+  border: 0;
+  padding: 0;
+}
+
+
+
+
+
 #footer {
   padding-bottom: 100px;
 }
@@ -219,12 +313,32 @@ tr.ief-row-entity td {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 150px;
+    height: 150px;
 
     img {
-      max-width: 150px;
+      max-width: 100%;
     }
   }
 }
+
+
+// all forms
+@media (min-width: 992px) {
+  .node-form {
+    margin-left: 0;
+  }
+}
+
+// Right Sidebar
+.region-sidebar-second {
+  .block:first-child {
+    h2 {
+      margin-top: 0;
+    }
+  }
+}
+// End right sidebar
 
 
 //////////////////

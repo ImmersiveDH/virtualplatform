@@ -19,11 +19,13 @@ h6 {
 h1 {
   color: $color_h1;
   font-family: $font_h1;
+  border-bottom: 4px solid $color_h1;
 }
 h2 {
   color: $color_h2;
   font-family: $font_h2;
   margin-top: 1em;
+  border-bottom: 4px solid $color_h2;
 }
 h3 {
   color: $color_h3;
