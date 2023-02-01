@@ -2,9 +2,11 @@ global-styling:
   css:
     theme:
       libraries/jquery-gridly/stylesheets/jquery.gridly.css: {}
+      libraries/coloris/coloris.min.css: {}
       css/style.css: {}
   js:
     libraries/jquery-gridly/javascripts/jquery.gridly.js: {}
+    libraries/coloris/coloris.min.js: {}
     js/hide_id_on_autocomplete_fields.js: {}
     js/virtualplatform.js: {}
   dependencies:
@@ -12,3 +14,4 @@ global-styling:
     - core/jquery
     - core/jquery.once
     - core/drupalSettings
+    - jquery_ui_slider/slider

@@ -14,31 +14,6 @@
 
 body {
   font-family: $font_body;
-
-  &.full-screen-preview {
-    .container {
-      width: 100%;
-      max-width: 100%;
-    }
-
-    header,
-    footer,
-    // div,
-    nav,
-    aside {
-      display: none;
-    }
-
-    #block-views-block-icons-on-this-board-block-1 {
-      display: block;
-      width: 100vw;
-      height: 100vh;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 100;
-    }
-  }
 }
 
 // START header
@@ -71,10 +46,29 @@ nav.navbar > .container {
   }
 }
 
-// Main menu
+// Start Main menu
 .region-nav-main {
   width: 100%;
 }
+// End main menu
+
+
+// Global tab settings
+.tabs {
+  @include link_no_underline($color_tab, $color_tab_hover);
+}
+
+.nav-link .nav-link {
+  border: 0;
+  padding: 0;
+}
+// End global tab settings.
+
+// Start footer
+.region-footer {
+  padding-bottom: 100px;
+}
+// End footer
 
 
 //////////////////////////////
@@ -133,6 +127,7 @@ a.tabledrag-handle .handle {
 .ief-form-bottom legend,
 tr.ief-row-entity td {
   // display: none;
+  border: 1px solid red;
 }
 
 tr.ief-row-entity td {
@@ -156,7 +151,6 @@ tr.ief-row-entity td {
   display: none;
 }
 // End hiding default IEF form.
-
 
 // the original column of inline entity field items
 #field-icon-values {
@@ -191,7 +185,8 @@ tr.ief-row-entity td {
     cursor: grabbing;
   }
 
-  .edit {
+  .edit,
+  .remove {
     background-color: black;
     color: white;
     padding: 5px;
@@ -199,15 +194,24 @@ tr.ief-row-entity td {
 
     position: absolute;
     z-index: 100;
+    cursor: pointer;
+  }
+
+  .edit {
     right: 0;
     top: 0;
   }
 
+  .remove {
+    left: 0;
+    top: 0;
+    }
+
   &:focus,
   &:hover {
-    .edit {
+    .edit,
+    .remove {
       opacity: 1;
-
     }
   }
 }
@@ -221,19 +225,16 @@ tr.ief-row-entity td {
 .gridly {
   height: 600px;
 }
+// End grid on board edit page
 
-// .draggable-icon:active {
-//   cursor: grabbing;
-// }
-//
-// .drag-start {
-//   opacity: 0.8;
-// }
-//
-// .drag-enter {
-//   opacity: 0.5;
-//   transform: scale(0.9);
-// }
+// start slider on board edit page-edit
+#edit-field-number-of-columns-wrapper {
+  #edit-field-number-of-columns {
+    display: none;
+  }
+}
+
+
 ////////////////////////////
 // END board editing page //
 ////////////////////////////
@@ -241,12 +242,20 @@ tr.ief-row-entity td {
 ///////////////////////////
 // start board display page
 ///////////////////////////
+
+// Start "Full screen view" button and positioning.
+.page-node-type-board:not(.page-edit) {
+  main .region-content {
+    position: relative;
+  }
+}
+
 #block-fullscreenboardbutton {
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 10;
-  
+  z-index: 1000;
+
   button,
   .button,
   .btn,
@@ -254,7 +263,52 @@ tr.ief-row-entity td {
 
   }
 }
+// End "Full screen view" button & positioning.
 
+
+// Start full screen mode
+body.full-screen-preview {
+  padding: 0 !important;
+  margin: 0 !important;
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  #block-virtualplatform-page-title,
+  header,
+  footer,
+  // div,
+  nav,
+  aside {
+    display: none;
+  }
+
+  #block-views-block-icons-on-this-board-block-1 {
+    display: block;
+    max-width: 100vw;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+  }
+}
+// End full screen mode
+
+
+// hide number of columns on board pages
+// (we don't remove the field because we need it to calculate the board display using JavaScript)
+.field--name-field-number-of-columns {
+  display: none;
+
+  .page-edit & {
+    display: block;
+  }
+}
+
+// Start icon grid on board view page (not edit!)
 #block-views-block-icons-on-this-board-block-1 {
   .view-content {
     display: block;
@@ -267,6 +321,15 @@ tr.ief-row-entity td {
   .views-row {
     @include icon-tile();
 
+    flex-direction: column;
+    > div {
+      flex: 1;
+    }
+
+    .views-field-field-image {
+      flex-grow: 2;
+    }
+
     float: left;
     width: 12.5%;
 
@@ -276,33 +339,18 @@ tr.ief-row-entity td {
       display: block;
     }
 
-
-
     .views-field-title {
       display: none;
     }
   }
-}
 
+  .views-field-field-image {
+    width: 50%;
+  }
+}
 // end board display page
 
 
-.tabs {
-  @include link_no_underline($color_tab, $color_tab_hover);
-}
-
-.nav-link .nav-link {
-  border: 0;
-  padding: 0;
-}
-
-
-
-
-
-#footer {
-  padding-bottom: 100px;
-}
 
 ///////////////////////////////
 // Start list of icons (/icons)

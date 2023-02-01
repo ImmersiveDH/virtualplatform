@@ -12,62 +12,66 @@
   // };
 
   $(document).ready(function() {
+
+    // Start color picker
+    // Initialize color picker on the "Color" field in all contexts.
+    function initColorPicker() {
+      if ($(".field--name-field-color input").length > 0) {
+        Coloris({
+          el: '.field--name-field-color input'
+        });
+      }
+    }
+    initColorPicker();
+    // End color picker
+
     var current_number_of_icons = $('.ief-row-entity').length;
 
     // Make "Add another item" link on the IEF entity reference list into a button:
     $('.field-add-more-submit').addClass('btn-primary');
+    $(".form-item-field-icon-actions-bundle select").val('icon'); // force the (bugged) content type select box to always be "icon".
+
 
     ///////////////////////////
     // Start draggable grid. //
     ///////////////////////////
     $('#edit-field-icon-wrapper').after('<div id="draggable-grid" class="gridly"><img src=""></div>');
 
-
-    // identify an element to observe
-    if ($("#node-board-edit-form #edit-field-icon-wrapper").length > 0) {
+    // Watch the icon entity reference field for changes.
+    // These happen via AJAX when we edit, delete, or create a new icon. (Or hit 'cancel' after we've done that.)
+    if ($("#edit-field-icon-wrapper").length > 0) {
       const elementToObserve = document.querySelector("#edit-field-icon-wrapper");
       // create a new instance of `MutationObserver` named `observer`,
       // passing it a callback function
       const observer = new MutationObserver(() => {
         // console.log('callback that runs when observer is triggered');
         console.log("The inline entity reference field changed.");
-        // initializeIconGrid();
 
+        // force the (bugged) content type select box to always be "icon".
+        // (By default) the Inline Entity Form complex widget doesn't filter content types.
+        // I THINK this is probably a bug: (Either way, we hide the field in CSS.)
+        // See https://drupal.stackexchange.com/questions/298098/inline-entity-form-allow-add-existing-nodes-only-for-specific-node-types-and-no
+        $(".form-item-field-icon-actions-bundle select").val('icon');
+
+        // Restart the color picker again.
+        initColorPicker();
+
+        // If the number of icons already selected has changed, reinitialize the icon grid to accommodate the new one, or remove the old one.
+        // Todo: this might break if we can somehow replace icons while keeping the total count the same.
+        // it also won't work if we change the image of the icon when editing it.
         var icon_count = $('.ief-row-entity').length;
         if (current_number_of_icons != icon_count) {
-          // Todo: this might break if we can somehow replace icons while keeping the total count the same.
-          // it also won't work if we change the image of the icon when editing it.
-
           console.log("an icon has been added or removed. reinitializing the grid.");
           initializeIconGrid();
           current_number_of_icons = icon_count;
         }
 
         changeContentItemToIcon();
-
-        // confirmOriginalOrder();
       });
-      // call `observe()` on that MutationObserver instance,
-      // passing it the element to observe, and the options object
       observer.observe(elementToObserve, {subtree: true, childList: true});
     }
 
-    // function confirmOriginalOrder() {
-    //   $('.draggable-icon img').each(function() {
-    //     var original_index = $(this).attr('data-original-order');
-    //     var img_src = $(this).attr('src');
-    //     $('.field--name-field-image > img[src="' + img_src +'"]').parents('.ief-row-entity').attr('data-original-order', original_index);
-    //     console.log("Updating icon at " + original_index);
-    //   });
-    //
-    //   // $('.field--name-field-image > img').each(function() {
-    //   //   var img_src = $(this).attr('src');
-    //   //   var originalOrder =
-    //   //   $()
-    //   // });
-    // }
-
-    // Changes "Content item" on the buttns "Create content item", "Add existing content item", and "Add new content item" to read "icon" instead.
+    // Change "Content item" on the buttns "Create content item", "Add existing content item", and "Add new content item" to read "icon" instead.
     function changeContentItemToIcon() {
       // buttons
       $('input[value="Add new content item"]').attr('value', 'Add new icon');
@@ -88,6 +92,34 @@
 
     }
 
+    /////////////////////////////////////
+    // set up the Better Icon Lookup view
+    /////////////////////////////////////
+
+    // Add a "reset" button to the form.
+    // We do this because the default "Reset" button reloads the entire page.
+    // function setupBetterIconLookupView() {
+    //   if ($(".view-better-icon-lookup .form-actions #reset-buttom-icon-lookup").length == 0) {
+    //     $(".view-better-icon-lookup .form-actions").append('<input id="reset-better-icon-lookup" class="button btn btn-primary" value="Reset" />');
+    //   }
+    // }
+    // setupBetterIconLookupView();
+
+    // When the form changes, make sure we re-add the reset button.
+    // if ($(".view-better-icon-lookup").length > 0) {
+    //   const better_icon_lookup_element = document.querySelector(".view-better-icon-lookup");
+    //   // create a new instance of `MutationObserver` named `observer`,
+    //   // passing it a callback function
+    //   const better_icon_lookup_observer = new MutationObserver(() => {
+    //     console.log("The Better Icon Lookup view changed.");
+    //     setupBetterIconLookupView();
+    //   });
+    //   better_icon_lookup_observer.observe(better_icon_lookup_element, {subtree: true, childList: true});
+    // }
+    ////////////////////////////////////////
+    // End setup for Better Icon Lookup View
+    ////////////////////////////////////////
+
 
     // make links in /icons view sort taxonomy terms in the /icons view instead of the default taxonomy term view.
     //https://virtual.wintersandassociates.com/icons?title=&tid=Flaticon+Animal+Pack&field_public_value=All
@@ -99,18 +131,10 @@
     });
 
 
-    // function checkIfInIframe() {
-    //   if ( window.location !== window.parent.location ) {
-    //     $('body').addClass('iframe');
-    //   } else {
-    //     // The page is not in an iframe
-    //   }
-    // }
-
     function initializeIconGrid() {
       $("#draggable-grid").empty();
       $('#inline-entity-form-field_icon-form tr.ief-row-entity').each(function() {
-        // Duplicate this image.
+        // Duplicate the image found in the inline entity form and copy it into the grid.
         // make sure the img tag itself isn't draggable. (otherwise, we can drag the img rather than the entire icon.)
         // put it in the draggable-grid;
         // and wrap it with a (draggable) ".draggable-icon" div.
@@ -119,9 +143,48 @@
           console.log("Setting up icon " + index);
           $(this).addClass("original-order-" + index);
           $(this).find("img").clone().addClass('original-order-' + index).attr('data-original-order', index).attr('draggable','false').appendTo('#draggable-grid').wrap('<div class="brick small draggable-icon original-order-' + index + '"></div>');
-          $('.draggable-icon.original-order-' + index).attr('data-original-order', index).append('<div class="controls"><div class="edit">Edit</div></div>');
+          $('.draggable-icon.original-order-' + index).attr('data-original-order', index).append('<div class="controls"><div class="edit">Edit</div><div class="remove">Remove</div></div>');
         // }
       });
+
+      if ($('.form-item-field-number-of-columns #slider').length < 1) {
+        $('#edit-field-number-of-columns').after('<div id="slider"><div class="ui-slider-handle"></div></div>');
+      }
+
+      // Start column slider
+      if ($('#edit-field-number-of-columns').length > 0) {
+        var select = $('#edit-field-number-of-columns');
+        var handle = $('#slider .ui-slider-handle');
+        var slider = $("#slider").slider({
+          create: function() {
+            handle.text($(this).slider("value"));
+          },
+          value: select[0].selectedIndex + 1,
+          min: 1,
+          max: 8,
+          range: "min",
+          slide: function(event, ui) {
+            // console.log(ui);
+            console.log(ui.value);
+            handle.text(ui.value);
+            select.val(ui.value);
+            initGridly(ui.value);
+          }
+        });
+
+        select.on("change", function() {
+          // slider.slider("value", this.selectedIndex + 1);
+          // slider.slider("min", 1);
+          // slider.slider("max", 8);
+
+          initGridly(this.selectedIndex + 1);
+        });
+      }
+      // todo: add preview
+      // todo: add rows slide.
+
+      // end column slider
+
 
       ////////////////////////////////////////////////////////
       // Gridly (https://github.com/ksylvest/jquery-gridly) //
@@ -146,9 +209,8 @@
         });
       }
 
-
       // Initialize Gridly
-      function initGridly() {
+      function initGridly(columns) {
         // first add them up.
        //  var num_icons = $('.draggable-icon').length;
        //  while (num_icons < 32) {
@@ -156,9 +218,8 @@
        //   num_icons++;
        // }
 
-        var grid_columns = 8;
         var max_width_total = $('#draggable-grid').width();
-        var max_width_individual =  Math.floor(max_width_total / grid_columns);
+        var max_width_individual =  Math.floor(max_width_total / columns);
 
         // this ensures the icon is a square.
         $('.draggable-icon').css('height', max_width_individual).css('width', max_width_individual);
@@ -166,7 +227,7 @@
         $('.gridly').gridly({
           base: max_width_individual, // px
           gutter: 1, // px
-          columns: grid_columns
+          columns: columns
         });
 
         // we want to reset the grid height every time or else it runs into trouble when we resize.
@@ -177,20 +238,13 @@
           callbacks: { reordering: reordering , reordered: reordered }
         });
       }
-      initGridly();
+      initGridly($('#edit-field-number-of-columns').val());
 
-      // Resize the height of icons of the displayed board itself.
-      // function initBoardIcons() {
-      //   var grid_columns = 8;
-      //   var max_width_total = $('#block-views-block-icons-on-this-board-block-1').width();
-      //   var max_width_individual = max_width_total / grid_columns;
-      //   $('#block-views-block-icons-on-this-board-block-1 .views-row').height(max_width_individual);
-      // }
-      // initBoardIcons();
-
+      var timeout;
       $(window).resize(function() {
-        initGridly();
-        // initBoardIcons();
+        console.log("The window resized.");
+        clearTimeout(timeout);
+        timeout = setTimeout(initGridly, 100);
       });
 
 
@@ -202,39 +256,38 @@
       //     i++;
       //   }
       // }
+      // Clicking the "Full screen view" button makes the board take up the entire window.
+      $(document).on("click", "#block-fullscreenboardbutton .btn", function(event) {
+        $("body").toggleClass('full-screen-preview');
+      });
+                              // "#block-fullscreenboardbutton .button",
+                              // "#block-fullscreenboardbutton .btn",
+                              // "#block-fullscreenboardbutton .btn-primary", function(event) {
+                              //   $("body").toggleClass('full-screen-preview');
+                              // });
+
+      // Close Full screen view when hitting escape.
+      $(document).on('keyup', function(e) {
+        // if (e.key == "Enter") $('.save').click();
+        if (e.key == "Escape") $("body").removeClass('full-screen-preview');
+      });
 
 
       // clicking the "edit" button on an icon in the grid triggers a click on the
       // "edit" button for the corresponding entry in the hidden inline entity form table
       $(document).on("click", ".draggable-icon .edit", function(event) {
-        // var originalOrder = $(this).parent().parent().attr('data-original-order');
-        // console.log("index of this button: " + originalOrder);
-        // $('tr.original-order-' + originalOrder + ' .ief-entity-operations input[value="Edit"]').mousedown();
         var img_src = $(this).parents('.draggable-icon').find('img').attr('src');
         console.log("looking for this icon: " + img_src);
         $('.field--name-field-image > img[src="' + img_src +'"]').parents('.ief-row-entity').find('.ief-entity-operations input[value="Edit"]').mousedown();
       });
 
-      // $(document).on("click", ".gridly .delete", function(event) {
-      //   var $this;
-      //   event.preventDefault();
-      //   event.stopPropagation();
-      //   $this = $(this);
-      //   $this.closest('.brick').remove();
-      //   return $('.gridly').gridly('layout');
-      // });
-      // $(document).on("click", ".add", function(event) {
-      //   event.preventDefault();
-      //   event.stopPropagation();
-      //   $('.gridly').append(brick);
-      //   return $('.gridly').gridly();
-      // });
-
-      // turn dragging off on display page,
-      // turn dragging on for edit page.
-      // $('.gridly').gridly('draggable', 'off'); // disables dragging
-      // $('.gridly').gridly('draggable', 'on');  // enables dragging
-
+      // clicking the "remove" button on an icon in the grid triggers a click on the
+      // "remove" button for the corresponding entry in the hidden inline entity form table
+      $(document).on("click", ".draggable-icon .remove", function(event) {
+        var img_src = $(this).parents('.draggable-icon').find('img').attr('src');
+        console.log("looking for this icon: " + img_src);
+        $('.field--name-field-image > img[src="' + img_src +'"]').parents('.ief-row-entity').find('.ief-entity-operations input[value="Remove"]').mousedown();
+      });
       ////////////////
       // End Gridly //
       ////////////////
@@ -243,5 +296,12 @@
     changeContentItemToIcon();
     initializeIconGrid();
 
+
+    // Board pages: Set up grid on view page, not edit page
+    if ($('#block-views-block-icons-on-this-board-block-1').length > 0) {
+      var number_of_columns_in_grid = $('.field--name-field-number-of-columns .field__item').text();
+      var tile_width = 100 / number_of_columns_in_grid;
+      $('#block-views-block-icons-on-this-board-block-1 .views-row').css("width", tile_width + '%');
+    }
   });
 })(jQuery, Drupal, once);
