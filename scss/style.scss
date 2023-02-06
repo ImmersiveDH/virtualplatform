@@ -125,8 +125,10 @@ a.tabledrag-handle .handle {
 #edit-field-icon-wrapper .tabledrag-toggle-weight-wrapper,
 #edit-field-icon-wrapper thead,
 .ief-form-bottom legend,
-tr.ief-row-entity td {
-  // display: none;
+tr.ief-row-entity td,
+#edit-field-icon-wrapper .form-item-field-icon-actions-bundle // the content type select box
+{
+  display: none;
   border: 1px solid red;
 }
 
@@ -205,7 +207,13 @@ tr.ief-row-entity td {
   .remove {
     left: 0;
     top: 0;
-    }
+  }
+
+  img {
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+  }
 
   &:focus,
   &:hover {
@@ -256,12 +264,23 @@ tr.ief-row-entity td {
   right: 0;
   z-index: 1000;
 
-  button,
-  .button,
-  .btn,
-  .btn-primary {
-
-  }
+  // Hide the button in full screen mode,
+  // but bring it back if we hover over the top right corner.
+  // button,
+  // .button,
+  // .btn,
+  // .btn-primary {
+  //   top: -100px;
+  // }
+  //
+  // &:hover {
+  //   button,
+  //   .button,
+  //   .btn,
+  //   .btn-primary {
+  //     top: 0;
+  //   }
+  // }
 }
 // End "Full screen view" button & positioning.
 
@@ -275,12 +294,15 @@ body.full-screen-preview {
     width: 100%;
     max-width: 100%;
   }
+
+  // Hide all the extraneous stuff when full page preview is on.
   #block-virtualplatform-page-title,
   header,
   footer,
   // div,
   nav,
-  aside {
+  aside,
+  .alert {
     display: none;
   }
 
@@ -321,34 +343,97 @@ body.full-screen-preview {
   .views-row {
     @include icon-tile();
 
+    display: flex;
     flex-direction: column;
-    > div {
-      flex: 1;
-    }
+    justify-content: center;
+    // > div {
+    //   flex: 1;
+    // }
 
-    .views-field-field-image {
-      flex-grow: 2;
-    }
+    // .views-field-field-image {
+    //   flex-grow: 2;
+    // }
 
     float: left;
     width: 12.5%;
 
-    &:after {
-      padding-bottom: 100%;
-      content: "";
-      display: block;
+    // &:after {
+    //   padding-bottom: 100%;
+    //   content: "";
+    //   display: block;
+    // }
+
+    // Colour contrast for text on this icon.
+    // .views-field-title,
+    // .views-field-field-color,
+    .views-field-field-text-above-icon,
+    .views-field-field-text-below-icon {
+      // color: white;
+      // font: 900 35vmin/50vh arial;
+      // text-align: center;
+      // mix-blend-mode: difference;
+      // filter: drop-shadow(0.05em 0.05em orange);
     }
 
-    .views-field-title {
+    .views-field-title,
+    .views-field-field-color {
       display: none;
     }
   }
 
   .views-field-field-image {
-    width: 50%;
+    // width: 50%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: flex;
+    * {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
   }
 }
 // end board display page
+
+// Hide the better lookup block by default; we only want to show it.
+#block-views-block-better-icon-lookup-block-1 {
+  display: none;
+}
+
+.view-better-icon-lookup {
+  width: 100%;
+  float: left;
+
+  .views-row {
+    width: 100%;
+    float: left;
+  }
+
+  .icon-and-text,
+  .next-to-icon {
+    float: left;
+  }
+
+  .icon-and-text {
+    color: #555;
+    background: #ddd;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+  }
+
+  .views-field-nid {
+    border: 1px solid red;
+    display: none;
+  }
+}
+
 
 
 
