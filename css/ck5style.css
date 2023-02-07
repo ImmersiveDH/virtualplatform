@@ -11210,7 +11210,8 @@ a > .ck-content code {
 .ck-content body.full-screen-preview footer,
 .ck-content body.full-screen-preview nav,
 .ck-content body.full-screen-preview aside,
-.ck-content body.full-screen-preview .alert {
+.ck-content body.full-screen-preview .alert,
+.ck-content body.full-screen-preview #block-virtualplatform-content {
   display: none;
 }
 .ck-content body.full-screen-preview #block-views-block-icons-on-this-board-block-1 {
@@ -11221,13 +11222,21 @@ a > .ck-content code {
   position: absolute;
   top: 0;
   left: 0;
+  margin-top: 14px;
+  margin-bottom: 14px;
   z-index: 100;
 }
-.ck-content .field--name-field-number-of-columns {
+.ck-content .field--name-field-number-of-columns,
+.ck-content .field--name-field-public {
   display: none;
 }
-.page-edit .ck-content .field--name-field-number-of-columns {
+.page-edit .ck-content .field--name-field-number-of-columns,
+.page-edit .ck-content .field--name-field-public {
   display: block;
+}
+.ck-content #block-views-block-icons-on-this-board-block-1 {
+  width: 100%;
+  float: left;
 }
 .ck-content #block-views-block-icons-on-this-board-block-1 .view-content {
   display: block;
@@ -11244,12 +11253,35 @@ a > .ck-content code {
   display: flex;
   align-items: center;
   justify-content: center;
+  float: left;
+  width: 12.5%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  float: left;
-  width: 12.5%;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
 }
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-above-icon,
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-below-icon {
+  width: 100%;
+  max-width: 100%;
+  position: absolute;
+}
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-above-icon {
+  top: 2%;
+}
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-below-icon {
+  bottom: 2%;
+}
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row.no-image .views-field-field-text-above-icon,
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row.no-image .views-field-field-text-below-icon {
+  position: relative;
+  top: auto;
+  bottom: auto;
+}
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row img,
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-image-scale,
 .ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-title,
 .ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-color {
   display: none;

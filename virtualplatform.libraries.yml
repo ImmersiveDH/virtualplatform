@@ -7,7 +7,7 @@ global-styling:
   js:
     libraries/jquery-gridly/javascripts/jquery.gridly.js: {}
     libraries/coloris/coloris.min.js: {}
-    libraries/jquery-fittext/jquery-fittext.js: {}
+    libraries/jquery.fittext.js/jquery.fittext.js: {}
     js/hide_id_on_autocomplete_fields.js: {}
     js/virtualplatform.js: {}
   dependencies:

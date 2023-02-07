@@ -302,7 +302,8 @@ body.full-screen-preview {
   // div,
   nav,
   aside,
-  .alert {
+  .alert,
+  #block-virtualplatform-content {
     display: none;
   }
 
@@ -314,17 +315,19 @@ body.full-screen-preview {
     position: absolute;
     top: 0;
     left: 0;
+    margin-top: 14px;
+    margin-bottom: 14px;
     z-index: 100;
   }
 }
 // End full screen mode
 
 
-// hide number of columns on board pages
+// hide number of columns and "display in public board list" on board pages
 // (we don't remove the field because we need it to calculate the board display using JavaScript)
-.field--name-field-number-of-columns {
+.field--name-field-number-of-columns,
+.field--name-field-public {
   display: none;
-
   .page-edit & {
     display: block;
   }
@@ -332,6 +335,9 @@ body.full-screen-preview {
 
 // Start icon grid on board view page (not edit!)
 #block-views-block-icons-on-this-board-block-1 {
+  width: 100%;
+  float: left;
+
   .view-content {
     display: block;
     width: 100%;
@@ -343,38 +349,44 @@ body.full-screen-preview {
   .views-row {
     @include icon-tile();
 
+    float: left;
+    width: 12.5%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    // > div {
-    //   flex: 1;
-    // }
 
-    // .views-field-field-image {
-    //   flex-grow: 2;
-    // }
+    // We apply default background settings, because JavaScript changes the img src to background on each row.
+    background-repeat: no-repeat;
+    background-position: center;
 
-    float: left;
-    width: 12.5%;
-
-    // &:after {
-    //   padding-bottom: 100%;
-    //   content: "";
-    //   display: block;
-    // }
-
-    // Colour contrast for text on this icon.
-    // .views-field-title,
-    // .views-field-field-color,
+    // we don't want text to overflow each icon.
+    position: relative;
     .views-field-field-text-above-icon,
     .views-field-field-text-below-icon {
-      // color: white;
-      // font: 900 35vmin/50vh arial;
-      // text-align: center;
-      // mix-blend-mode: difference;
-      // filter: drop-shadow(0.05em 0.05em orange);
+      width: 100%; // this is so FitText works correctly.
+      max-width: 100%;
+      position: absolute;
+      // white-space: nowrap;
+    }
+    .views-field-field-text-above-icon {
+      top: 2%;
+    }
+    .views-field-field-text-below-icon {
+      bottom: 2%;
     }
 
+    // when there's no image, we want the text blocks to just come one after another.
+    &.no-image {
+      .views-field-field-text-above-icon,
+      .views-field-field-text-below-icon {
+        position: relative;
+        top: auto;
+        bottom: auto;
+      }
+    }
+
+    img,
+    .views-field-field-image-scale,
     .views-field-title,
     .views-field-field-color {
       display: none;

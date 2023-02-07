@@ -12,11 +12,14 @@
   // };
 
   $(document).ready(function() {
-    var url_found = UrlExists("https://virtual.wintersandassociates.com/sdfsadfs");
-    if (!url_found) {
-      console.log("this URL doesn't exist.");
-    }
-    // Start color picker
+    // var url_found = UrlExists("https://virtual.wintersandassociates.com/sdfsadfs");
+    // if (!url_found) {
+    //   console.log("this URL doesn't exist.");
+    // }
+
+    ////////////////////////
+    // Start color picker //
+    ////////////////////////
     // Initialize color picker on the "Color" field in all contexts.
     function initColorPicker() {
       if ($(".field--name-field-color input").length > 0) {
@@ -27,7 +30,57 @@
       }
     }
     initColorPicker();
-    // End color picker
+    //////////////////////
+    // End color picker //
+    //////////////////////
+
+
+
+    ///////////////////////////////
+    // Start full screen preview //
+    ///////////////////////////////
+    function turnOnFullScreenPreview() {
+      $("body").addClass('full-screen-preview');
+      window.location.hash = "full-screen";
+      formatViewBoardNode();
+    }
+
+    function turnOffFullScreenPreview() {
+      $("body").removeClass('full-screen-preview');
+      window.location.href = window.location.href.split('#')[0];
+      formatViewBoardNode();
+    }
+
+    function toggleFullScreenPreview() {
+      if ($("body").hasClass('full-screen-preview')) {
+        turnOffFullScreenPreview();
+      }
+      else {
+        turnOnFullScreenPreview();
+      }
+    }
+
+    // Clicking the "Full screen view" button makes the board take up the entire window.
+    $(document).on("click", "#block-fullscreenboardbutton .btn", function(event) {
+      toggleFullScreenPreview();
+    });
+
+    // Close Full screen view when hitting escape.
+    $(document).on('keyup', function(e) {
+      if (e.key == "Escape") {
+        turnOffFullScreenPreview();
+      }
+    });
+
+    // Turn on full screen mode when loading page with hash
+    if (window.location.hash.substring(1) == "full-screen") {
+      turnOnFullScreenPreview();
+    }
+    /////////////////////////////
+    // End full screen preview //
+    /////////////////////////////
+
+
 
     var current_number_of_icons = $('.ief-row-entity').length;
 
@@ -79,6 +132,7 @@
         }
 
         changeContentItemToIcon();
+        addScaleSlider(); // add the icon scale slider if it doesn't already exist.
       });
       observer.observe(elementToObserve, {subtree: true, childList: true});
     }
@@ -193,32 +247,51 @@
   // Start image size slider //
   /////////////////////////////
   // todo: make this respect the editor.
-  if ($('.field--name-field-image-scale #image-scale-slider').length < 1) {
-    $('.field--name-field-image-scale').after('<div id="image-scale-slider"><div class="ui-slider-handle"></div></div>');
+  function addScaleSlider() {
+    if ($('#image-scale-slider').length < 1) {
+      // 1. Get the label for the image field (we don't always know if the label will be changed.)
+      var imageScaleTextboxLabel = $(".node-form label:contains('Image Scale'), label:contains('Image scale')");
+
+      // 2. The element to add.
+      var sliderToAppendToScaleField = '<div id="image-scale-slider"><div class="ui-slider-handle"></div></div>';
+      // 1. Board edit page (using inline entity form)
+      // as well as icon edit page (not using inline entity form)
+      imageScaleTextboxLabel.parent().parent().after(sliderToAppendToScaleField);
+
+      // 3. Initialize scale slider
+      var imageScaleSliderTextbox = $(imageScaleTextboxLabel).next('input');
+
+      var handle = $('#image-scale-slider .ui-slider-handle');
+      var imageScaleSlider = $("#image-scale-slider").slider({
+        create: function() {
+          handle.text($(this).slider("value"));
+        },
+        value: imageScaleSliderTextbox.val(),
+        min: 0.0,
+        max: 2.0,
+        range: "min",
+        step: 0.1,
+        slide: function(event, ui) {
+          console.log("image slider set to " + ui.value);
+          handle.text(ui.value);
+          imageScaleSlider.val(Number(ui.value));
+          imageScaleSliderTextbox.val(ui.value);
+        }
+      });
+    }
+    else {
+      console.log("There is already a slider for the image scale field.");
+    }
   }
+  addScaleSlider();
+
+
   ////////////////////////////
   // End image size slider. //
   ////////////////////////////
 
 
-  ///////////////////////////////
-  // Start full screen preview //
-  ///////////////////////////////
-  // Clicking the "Full screen view" button makes the board take up the entire window.
-  $(document).on("click", "#block-fullscreenboardbutton .btn", function(event) {
-    $("body").toggleClass('full-screen-preview');
-    formatViewBoardNode();
-  });
 
-  // Close Full screen view when hitting escape.
-  $(document).on('keyup', function(e) {
-    // if (e.key == "Enter") $('.save').click();
-    if (e.key == "Escape") $("body").removeClass('full-screen-preview');
-    formatViewBoardNode();
-  });
-  /////////////////////////////
-  // End full screen preview //
-  /////////////////////////////
 
 
   /////////////////////////////////////////////////////////
@@ -242,27 +315,6 @@
   ////////////////////////////
   // End board editing page //
   ////////////////////////////
-
-
-  ///////////////////////////////////
-  // Style icons (in all contexts) //
-  ///////////////////////////////////
-  function styleIcons() {
-    var icon;
-    var image;
-    var image_scale;
-    var background_color;
-    var text_above;
-    var text_below;
-
-    // Hardcoded on "Icons on this board" view (/node/123, not /node/123/edit)
-    $(".views-field-field-text-above-icon").fitText();
-    $(".views-field-field-text-below-icon").fitText();
-  }
-  styleIcons();
-  ///////////////
-  // End icons //
-  ///////////////
 
 
   ////////////////////////////////////////////////////////
@@ -314,6 +366,7 @@
   }
 
   // Reinitialize Gridly every time the window resizes.
+  // but we need to do a timeout for reasons or it doesn't work consistently.
   var timeout;
   $(window).resize(function() {
     console.log("The window resized.");
@@ -336,17 +389,44 @@
       var num_columns = $('.field--name-field-number-of-columns .field__item').text();
       var max_width_total = $('.view-icons-on-this-board').width();
       var max_width_individual =  Math.floor(max_width_total / num_columns);
-      console.log("Formatting the icons on this board to " + max_width_individual + "px square.");
+      // console.log("Formatting the icons on this board to " + max_width_individual + "px square.");
 
       // this ensures the icon is a square.
       $('.view-icons-on-this-board .views-row').css('height', max_width_individual).css('width', max_width_individual);
 
       $('.view-icons-on-this-board .views-row').each(function() {
-        // Set the background colour of each icon.
+        // 1. Change the img src to the background.
+        var image_url = $(this).find("img").attr("src");
+        $(this).css('background-image', 'url("' + image_url + '")');
+
+        // If there's no image, just make the text flow rather than be absolutely
+        // positioned to the top and bottom.
+        if (!image_url) {
+          $(this).addClass("no-image");
+        }
+
+        // 2. Set the background scale of this icon.
+        var image_scale = $(this).find('.views-field-field-image-scale .field-content').text();
+        if (!image_scale) {
+          image_scale = 1;
+        }
+        var image_size_native = $(this).find('img').attr('width');
+        $(this).css('background-size', image_scale * image_size_native);
+
+        // 3. Set the background colour of this icon.
         var background_color_for_this_icon = $(this).find('.views-field-field-color .field-content').text();
         $(this).css("background-color", background_color_for_this_icon);
         // Set text color based on background color.
         $(this).css("color", getTextColorBasedOnBackgroundColor(background_color_for_this_icon));
+
+        // 4. Make sure the text doesn't overflow,
+        //    Then run fittext on them.
+        $(".views-field-field-text-above-icon, .views-field-field-text-below-icon").each(function() {
+          $(this).width(max_width_individual);
+          $(this).fitText();
+
+        // $( .field-content").fitText();
+        });
       });
     }
   }
@@ -387,8 +467,6 @@
   // When the form changes, update the icon view AGAIN.
   if ($(".view-better-icon-lookup").length > 0) {
     const better_icon_lookup_element = document.querySelector("#block-views-block-better-icon-lookup-block-1");
-    // create a new instance of `MutationObserver` named `observer`,
-    // passing it a callback function
     const better_icon_lookup_observer = new MutationObserver(() => {
       console.log("The Better Icon Lookup view changed.");
       setupBetterIconLookupView();

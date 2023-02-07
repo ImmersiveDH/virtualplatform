@@ -13072,7 +13072,8 @@ body.full-screen-preview header,
 body.full-screen-preview footer,
 body.full-screen-preview nav,
 body.full-screen-preview aside,
-body.full-screen-preview .alert {
+body.full-screen-preview .alert,
+body.full-screen-preview #block-virtualplatform-content {
   display: none;
 }
 body.full-screen-preview #block-views-block-icons-on-this-board-block-1 {
@@ -13083,16 +13084,24 @@ body.full-screen-preview #block-views-block-icons-on-this-board-block-1 {
   position: absolute;
   top: 0;
   left: 0;
+  margin-top: 14px;
+  margin-bottom: 14px;
   z-index: 100;
 }
 
-.field--name-field-number-of-columns {
+.field--name-field-number-of-columns,
+.field--name-field-public {
   display: none;
 }
-.page-edit .field--name-field-number-of-columns {
+.page-edit .field--name-field-number-of-columns,
+.page-edit .field--name-field-public {
   display: block;
 }
 
+#block-views-block-icons-on-this-board-block-1 {
+  width: 100%;
+  float: left;
+}
 #block-views-block-icons-on-this-board-block-1 .view-content {
   display: block;
   width: 100%;
@@ -13108,12 +13117,35 @@ body.full-screen-preview #block-views-block-icons-on-this-board-block-1 {
   display: flex;
   align-items: center;
   justify-content: center;
+  float: left;
+  width: 12.5%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  float: left;
-  width: 12.5%;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
 }
+#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-above-icon,
+#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-below-icon {
+  width: 100%;
+  max-width: 100%;
+  position: absolute;
+}
+#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-above-icon {
+  top: 2%;
+}
+#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-below-icon {
+  bottom: 2%;
+}
+#block-views-block-icons-on-this-board-block-1 .views-row.no-image .views-field-field-text-above-icon,
+#block-views-block-icons-on-this-board-block-1 .views-row.no-image .views-field-field-text-below-icon {
+  position: relative;
+  top: auto;
+  bottom: auto;
+}
+#block-views-block-icons-on-this-board-block-1 .views-row img,
+#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-image-scale,
 #block-views-block-icons-on-this-board-block-1 .views-row .views-field-title,
 #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-color {
   display: none;
