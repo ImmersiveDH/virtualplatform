@@ -12907,6 +12907,10 @@ nav.navbar > .container {
   width: 100%;
 }
 
+main {
+  margin-bottom: 4em;
+}
+
 .tabs a {
   color: #219ebc;
   text-decoration: none;
@@ -12925,8 +12929,9 @@ nav.navbar > .container {
   padding: 0;
 }
 
-.region-footer {
-  padding-bottom: 100px;
+footer {
+  border-top: 1px solid gray;
+  margin-top: 2em;
 }
 
 #node-board-edit-form #edit-body-wrapper,
@@ -12936,6 +12941,23 @@ nav.navbar > .container {
 }
 #node-board-edit-form .invalid-feedback {
   display: block;
+}
+
+.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,
+.ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
+  background-color: #eee;
+}
+
+.ck-content {
+  min-height: 200px;
+}
+
+.filter-guidelines-plain_text .tips {
+  padding-left: 1rem;
+}
+
+#edit-field-icon-actions {
+  padding: 10px;
 }
 
 #edit-field-icon > legend {
@@ -12949,6 +12971,19 @@ nav.navbar > .container {
   padding: 0;
 }
 
+.ui-slider {
+  margin-right: 35px;
+}
+.ui-slider .ui-slider-handle {
+  width: auto;
+  height: auto;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  text-align: center;
+}
+
 .field-multiple-drag {
   display: none;
 }
@@ -12958,11 +12993,47 @@ a.tabledrag-handle .handle {
 }
 
 #edit-field-icon-wrapper .tabledrag-toggle-weight-wrapper,
-#edit-field-icon-wrapper thead,
 .ief-form-bottom legend,
-tr.ief-row-entity td,
-#edit-field-icon-wrapper .form-item-field-icon-actions-bundle {
+#edit-field-icon-wrapper .form-item-field-icon-actions-bundle,
+.field--name-field-image-scale input,
+#edit-body-0-format,
+#edit-field-number-of-columns-wrapper #edit-field-number-of-columns,
+.form-item-field-icon-form-0-status-value,
+.field--name-field-image-scale {
   display: none;
+}
+body.admin #edit-field-icon-wrapper .tabledrag-toggle-weight-wrapper, body.role-admin #edit-field-icon-wrapper .tabledrag-toggle-weight-wrapper,
+body.admin .ief-form-bottom legend,
+body.role-admin .ief-form-bottom legend,
+body.admin #edit-field-icon-wrapper .form-item-field-icon-actions-bundle,
+body.role-admin #edit-field-icon-wrapper .form-item-field-icon-actions-bundle,
+body.admin .field--name-field-image-scale input,
+body.role-admin .field--name-field-image-scale input,
+body.admin #edit-body-0-format,
+body.role-admin #edit-body-0-format,
+body.admin #edit-field-number-of-columns-wrapper #edit-field-number-of-columns,
+body.role-admin #edit-field-number-of-columns-wrapper #edit-field-number-of-columns,
+body.admin .form-item-field-icon-form-0-status-value,
+body.role-admin .form-item-field-icon-form-0-status-value,
+body.admin .field--name-field-image-scale,
+body.role-admin .field--name-field-image-scale {
+  display: block;
+  border: 1px solid red;
+}
+
+tr.ief-row-entity td {
+  display: none;
+}
+body.admin tr.ief-row-entity td, body.role-admin tr.ief-row-entity td {
+  display: table-cell;
+  border: 1px solid red;
+}
+
+#edit-field-icon-wrapper thead {
+  display: none;
+}
+body.admin #edit-field-icon-wrapper thead, body.role-admin #edit-field-icon-wrapper thead {
+  display: table-header-group;
   border: 1px solid red;
 }
 
@@ -12990,18 +13061,10 @@ tr.ief-row-entity td[colspan="2"], tr.ief-row-entity td[colspan="3"], tr.ief-row
 }
 
 .draggable-icon {
-  color: #555;
-  background: #ddd;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: grab;
   user-select: none;
-  width: 150px;
-  height: 150px;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .draggable-icon:dragging {
   cursor: grabbing;
@@ -13024,15 +13087,13 @@ tr.ief-row-entity td[colspan="2"], tr.ief-row-entity td[colspan="3"], tr.ief-row
   left: 0;
   top: 0;
 }
-.draggable-icon img {
-  object-fit: contain;
-  max-width: 100%;
-  max-height: 100%;
-}
 .draggable-icon:focus .edit,
 .draggable-icon:focus .remove, .draggable-icon:hover .edit,
 .draggable-icon:hover .remove {
   opacity: 1;
+}
+.draggable-icon img {
+  display: none;
 }
 
 .gridly,
@@ -13042,10 +13103,6 @@ tr.ief-row-entity td[colspan="2"], tr.ief-row-entity td[colspan="3"], tr.ief-row
 
 .gridly {
   height: 600px;
-}
-
-#edit-field-number-of-columns-wrapper #edit-field-number-of-columns {
-  display: none;
 }
 
 .page-node-type-board:not(.page-edit) main .region-content {
@@ -13098,17 +13155,20 @@ body.full-screen-preview #block-views-block-icons-on-this-board-block-1 {
   display: block;
 }
 
-#block-views-block-icons-on-this-board-block-1 {
+#block-views-block-icons-on-this-board-block-1,
+.view-icons-on-this-board {
   width: 100%;
   float: left;
 }
-#block-views-block-icons-on-this-board-block-1 .view-content {
+#block-views-block-icons-on-this-board-block-1 .view-content,
+.view-icons-on-this-board .view-content {
   display: block;
   width: 100%;
   background-size: 12.5% 25%;
   background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
-#block-views-block-icons-on-this-board-block-1 .views-row {
+#block-views-block-icons-on-this-board-block-1 .views-row,
+.view-icons-on-this-board .views-row {
   color: #555;
   background: #ddd;
   border: 1px solid #ccc;
@@ -13127,19 +13187,25 @@ body.full-screen-preview #block-views-block-icons-on-this-board-block-1 {
   position: relative;
 }
 #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-above-icon,
-#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-below-icon {
+#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-below-icon,
+.view-icons-on-this-board .views-row .views-field-field-text-above-icon,
+.view-icons-on-this-board .views-row .views-field-field-text-below-icon {
   width: 100%;
   max-width: 100%;
   position: absolute;
 }
-#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-above-icon {
+#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-above-icon,
+.view-icons-on-this-board .views-row .views-field-field-text-above-icon {
   top: 2%;
 }
-#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-below-icon {
+#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-below-icon,
+.view-icons-on-this-board .views-row .views-field-field-text-below-icon {
   bottom: 2%;
 }
 #block-views-block-icons-on-this-board-block-1 .views-row.no-image .views-field-field-text-above-icon,
-#block-views-block-icons-on-this-board-block-1 .views-row.no-image .views-field-field-text-below-icon {
+#block-views-block-icons-on-this-board-block-1 .views-row.no-image .views-field-field-text-below-icon,
+.view-icons-on-this-board .views-row.no-image .views-field-field-text-above-icon,
+.view-icons-on-this-board .views-row.no-image .views-field-field-text-below-icon {
   position: relative;
   top: auto;
   bottom: auto;
@@ -13147,16 +13213,26 @@ body.full-screen-preview #block-views-block-icons-on-this-board-block-1 {
 #block-views-block-icons-on-this-board-block-1 .views-row img,
 #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-image-scale,
 #block-views-block-icons-on-this-board-block-1 .views-row .views-field-title,
-#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-color {
+#block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-color,
+.view-icons-on-this-board .views-row img,
+.view-icons-on-this-board .views-row .views-field-field-image-scale,
+.view-icons-on-this-board .views-row .views-field-title,
+.view-icons-on-this-board .views-row .views-field-field-color {
   display: none;
 }
-#block-views-block-icons-on-this-board-block-1 .views-field-field-image {
+#block-views-block-icons-on-this-board-block-1 .views-field-field-image,
+.view-icons-on-this-board .views-field-field-image {
   max-width: 100%;
   max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   display: flex;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-#block-views-block-icons-on-this-board-block-1 .views-field-field-image * {
+#block-views-block-icons-on-this-board-block-1 .views-field-field-image *,
+.view-icons-on-this-board .views-field-field-image * {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;

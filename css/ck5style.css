@@ -11063,6 +11063,9 @@ a > .ck-content code {
 .ck-content .region-nav-main {
   width: 100%;
 }
+.ck-content main {
+  margin-bottom: 4em;
+}
 .ck-content .tabs a {
   color: #219ebc;
   text-decoration: none;
@@ -11079,8 +11082,9 @@ a > .ck-content code {
   border: 0;
   padding: 0;
 }
-.ck-content .region-footer {
-  padding-bottom: 100px;
+.ck-content footer {
+  border-top: 1px solid gray;
+  margin-top: 2em;
 }
 .ck-content #node-board-edit-form #edit-body-wrapper,
 .ck-content #node-board-edit-form #edit-path-wrapper,
@@ -11089,6 +11093,19 @@ a > .ck-content code {
 }
 .ck-content #node-board-edit-form .invalid-feedback {
   display: block;
+}
+.ck-content .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,
+.ck-content .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
+  background-color: #eee;
+}
+.ck-content .ck-content {
+  min-height: 200px;
+}
+.ck-content .filter-guidelines-plain_text .tips {
+  padding-left: 1rem;
+}
+.ck-content #edit-field-icon-actions {
+  padding: 10px;
 }
 .ck-content #edit-field-icon > legend {
   display: none;
@@ -11100,6 +11117,18 @@ a > .ck-content code {
   margin: 0;
   padding: 0;
 }
+.ck-content .ui-slider {
+  margin-right: 35px;
+}
+.ck-content .ui-slider .ui-slider-handle {
+  width: auto;
+  height: auto;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  text-align: center;
+}
 .ck-content .field-multiple-drag {
   display: none;
 }
@@ -11107,11 +11136,45 @@ a > .ck-content code {
   height: 24px;
 }
 .ck-content #edit-field-icon-wrapper .tabledrag-toggle-weight-wrapper,
-.ck-content #edit-field-icon-wrapper thead,
 .ck-content .ief-form-bottom legend,
-.ck-content tr.ief-row-entity td,
-.ck-content #edit-field-icon-wrapper .form-item-field-icon-actions-bundle {
+.ck-content #edit-field-icon-wrapper .form-item-field-icon-actions-bundle,
+.ck-content .field--name-field-image-scale input,
+.ck-content #edit-body-0-format,
+.ck-content #edit-field-number-of-columns-wrapper #edit-field-number-of-columns,
+.ck-content .form-item-field-icon-form-0-status-value,
+.ck-content .field--name-field-image-scale {
   display: none;
+}
+body.admin .ck-content #edit-field-icon-wrapper .tabledrag-toggle-weight-wrapper, body.role-admin .ck-content #edit-field-icon-wrapper .tabledrag-toggle-weight-wrapper,
+body.admin .ck-content .ief-form-bottom legend,
+body.role-admin .ck-content .ief-form-bottom legend,
+body.admin .ck-content #edit-field-icon-wrapper .form-item-field-icon-actions-bundle,
+body.role-admin .ck-content #edit-field-icon-wrapper .form-item-field-icon-actions-bundle,
+body.admin .ck-content .field--name-field-image-scale input,
+body.role-admin .ck-content .field--name-field-image-scale input,
+body.admin .ck-content #edit-body-0-format,
+body.role-admin .ck-content #edit-body-0-format,
+body.admin .ck-content #edit-field-number-of-columns-wrapper #edit-field-number-of-columns,
+body.role-admin .ck-content #edit-field-number-of-columns-wrapper #edit-field-number-of-columns,
+body.admin .ck-content .form-item-field-icon-form-0-status-value,
+body.role-admin .ck-content .form-item-field-icon-form-0-status-value,
+body.admin .ck-content .field--name-field-image-scale,
+body.role-admin .ck-content .field--name-field-image-scale {
+  display: block;
+  border: 1px solid red;
+}
+.ck-content tr.ief-row-entity td {
+  display: none;
+}
+body.admin .ck-content tr.ief-row-entity td, body.role-admin .ck-content tr.ief-row-entity td {
+  display: table-cell;
+  border: 1px solid red;
+}
+.ck-content #edit-field-icon-wrapper thead {
+  display: none;
+}
+body.admin .ck-content #edit-field-icon-wrapper thead, body.role-admin .ck-content #edit-field-icon-wrapper thead {
+  display: table-header-group;
   border: 1px solid red;
 }
 .ck-content tr.ief-row-entity td[colspan="2"], .ck-content tr.ief-row-entity td[colspan="3"], .ck-content tr.ief-row-entity td[colspan="4"], .ck-content tr.ief-row-entity td[colspan="5"], .ck-content tr.ief-row-entity td[colspan="6"], .ck-content tr.ief-row-entity td[colspan="7"] {
@@ -11134,18 +11197,10 @@ a > .ck-content code {
   position: relative;
 }
 .ck-content .draggable-icon {
-  color: #555;
-  background: #ddd;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: grab;
   user-select: none;
-  width: 150px;
-  height: 150px;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .ck-content .draggable-icon:dragging {
   cursor: grabbing;
@@ -11168,15 +11223,13 @@ a > .ck-content code {
   left: 0;
   top: 0;
 }
-.ck-content .draggable-icon img {
-  object-fit: contain;
-  max-width: 100%;
-  max-height: 100%;
-}
 .ck-content .draggable-icon:focus .edit,
 .ck-content .draggable-icon:focus .remove, .ck-content .draggable-icon:hover .edit,
 .ck-content .draggable-icon:hover .remove {
   opacity: 1;
+}
+.ck-content .draggable-icon img {
+  display: none;
 }
 .ck-content .gridly,
 .ck-content .gridly > :not(.dragging) {
@@ -11184,9 +11237,6 @@ a > .ck-content code {
 }
 .ck-content .gridly {
   height: 600px;
-}
-.ck-content #edit-field-number-of-columns-wrapper #edit-field-number-of-columns {
-  display: none;
 }
 .ck-content .page-node-type-board:not(.page-edit) main .region-content {
   position: relative;
@@ -11234,17 +11284,20 @@ a > .ck-content code {
 .page-edit .ck-content .field--name-field-public {
   display: block;
 }
-.ck-content #block-views-block-icons-on-this-board-block-1 {
+.ck-content #block-views-block-icons-on-this-board-block-1,
+.ck-content .view-icons-on-this-board {
   width: 100%;
   float: left;
 }
-.ck-content #block-views-block-icons-on-this-board-block-1 .view-content {
+.ck-content #block-views-block-icons-on-this-board-block-1 .view-content,
+.ck-content .view-icons-on-this-board .view-content {
   display: block;
   width: 100%;
   background-size: 12.5% 25%;
   background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
-.ck-content #block-views-block-icons-on-this-board-block-1 .views-row {
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row,
+.ck-content .view-icons-on-this-board .views-row {
   color: #555;
   background: #ddd;
   border: 1px solid #ccc;
@@ -11263,19 +11316,25 @@ a > .ck-content code {
   position: relative;
 }
 .ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-above-icon,
-.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-below-icon {
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-below-icon,
+.ck-content .view-icons-on-this-board .views-row .views-field-field-text-above-icon,
+.ck-content .view-icons-on-this-board .views-row .views-field-field-text-below-icon {
   width: 100%;
   max-width: 100%;
   position: absolute;
 }
-.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-above-icon {
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-above-icon,
+.ck-content .view-icons-on-this-board .views-row .views-field-field-text-above-icon {
   top: 2%;
 }
-.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-below-icon {
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-text-below-icon,
+.ck-content .view-icons-on-this-board .views-row .views-field-field-text-below-icon {
   bottom: 2%;
 }
 .ck-content #block-views-block-icons-on-this-board-block-1 .views-row.no-image .views-field-field-text-above-icon,
-.ck-content #block-views-block-icons-on-this-board-block-1 .views-row.no-image .views-field-field-text-below-icon {
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row.no-image .views-field-field-text-below-icon,
+.ck-content .view-icons-on-this-board .views-row.no-image .views-field-field-text-above-icon,
+.ck-content .view-icons-on-this-board .views-row.no-image .views-field-field-text-below-icon {
   position: relative;
   top: auto;
   bottom: auto;
@@ -11283,16 +11342,26 @@ a > .ck-content code {
 .ck-content #block-views-block-icons-on-this-board-block-1 .views-row img,
 .ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-image-scale,
 .ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-title,
-.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-color {
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-row .views-field-field-color,
+.ck-content .view-icons-on-this-board .views-row img,
+.ck-content .view-icons-on-this-board .views-row .views-field-field-image-scale,
+.ck-content .view-icons-on-this-board .views-row .views-field-title,
+.ck-content .view-icons-on-this-board .views-row .views-field-field-color {
   display: none;
 }
-.ck-content #block-views-block-icons-on-this-board-block-1 .views-field-field-image {
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-field-field-image,
+.ck-content .view-icons-on-this-board .views-field-field-image {
   max-width: 100%;
   max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   display: flex;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-.ck-content #block-views-block-icons-on-this-board-block-1 .views-field-field-image * {
+.ck-content #block-views-block-icons-on-this-board-block-1 .views-field-field-image *,
+.ck-content .view-icons-on-this-board .views-field-field-image * {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;

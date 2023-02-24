@@ -4,3 +4,12 @@
  * @file
  * Virtual Platform theme file.
  */
+ /**
+  * Implements template_preprocess_html().
+  */
+ function virtualplatform_preprocess_html(&$variables) {
+   $roles = \Drupal::currentUser()->getRoles();
+   foreach ($roles as $role) {
+     $variables['attributes']['class'][] = "role-{$role}";
+   }
+ }

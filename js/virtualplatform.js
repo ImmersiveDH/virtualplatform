@@ -92,9 +92,11 @@
     ///////////////////////////
     // Start draggable grid. //
     ///////////////////////////
-    $('#edit-field-icon-wrapper').after('<div id="draggable-grid" class="gridly"><img src=""></div>');
 
-    // Watch the icon entity reference field for changes.
+    // 1. Create the container for the draggable grid.
+    $('#edit-field-icon-wrapper').after('<div id="draggable-grid" class="gridly"></div>');
+
+    // 2. Watch the icon entity reference field for changes.
     // These happen via AJAX when we edit, delete, or create a new icon. (Or hit 'cancel' after we've done that.)
     if ($("#edit-field-icon-wrapper").length > 0) {
       const elementToObserve = document.querySelector("#edit-field-icon-wrapper");
@@ -121,15 +123,10 @@
         // Restart the color picker again.
         initColorPicker();
 
-        // If the number of icons already selected has changed, reinitialize the icon grid to accommodate the new one, or remove the old one.
-        // Todo: this might break if we can somehow replace icons while keeping the total count the same.
-        // it also won't work if we change the image of the icon when editing it.
-        var icon_count = $('.ief-row-entity').length;
-        if (current_number_of_icons != icon_count) {
-          console.log("an icon has been added or removed. reinitializing the grid.");
+        // Reinitialize the entire grid.
           initializeIconGrid();
-          current_number_of_icons = icon_count;
-        }
+          // current_number_of_icons = icon_count;
+        // }
 
         changeContentItemToIcon();
         addScaleSlider(); // add the icon scale slider if it doesn't already exist.
@@ -140,18 +137,18 @@
     // Change "Content item" on the buttns "Create content item", "Add existing content item", and "Add new content item" to read "icon" instead.
     function changeContentItemToIcon() {
       // buttons
-      $('input[value="Add new content item"]').attr('value', 'Add new icon');
-      $('input[value="Add existing content item"]').attr('value', 'Add existing icon');
-      $('input[value="Add content item"]').attr('value', 'Add icon');
-      $('input[value="Create content item"]').attr('value', 'Create icon');
-      $('input[value="Update content item"]').attr('value', 'Update icon');
+      $('input[value="Add new content item"]').attr('value', 'Add new button');
+      $('input[value="Add existing content item"]').attr('value', 'Add existing button');
+      $('input[value="Add content item"]').attr('value', 'Add button');
+      $('input[value="Create content item"]').attr('value', 'Create button');
+      $('input[value="Update content item"]').attr('value', 'Update button');
 
 
       // headings/legends
-      $(".fieldset-legend:contains(Add new content item)").text("Add new icon");
-      $(".fieldset-legend:contains(Add existing content item)").text("Add existing icon");
-      $(".fieldset-legend:contains(Add content item)").text("Add icon");
-      $(".ief-form-bottom label:contains(Content item)").text("Icon name");
+      $(".fieldset-legend:contains(Add new content item)").text("Add new button");
+      $(".fieldset-legend:contains(Add existing content item)").text("Add existing button");
+      $(".fieldset-legend:contains(Add content item)").text("Add button");
+      $(".ief-form-bottom label:contains(Content item)").text("Button name");
 
       // add a label to "create an icon".
       // ief-form
@@ -168,22 +165,46 @@
     });
 
 
+    // Intitialze draggable grid.
     function initializeIconGrid() {
+      // 1. Clear the draggable grid every time; it can get full of broken icons otherwise.
       $("#draggable-grid").empty();
+
+      // 2. Add each item in the IEF table to the draggable grid.
       $('#inline-entity-form-field_icon-form tr.ief-row-entity').each(function() {
         // Duplicate the image found in the inline entity form and copy it into the grid.
         // make sure the img tag itself isn't draggable. (otherwise, we can drag the img rather than the entire icon.)
         // put it in the draggable-grid;
         // and wrap it with a (draggable) ".draggable-icon" div.
+
         var index = $(this).index();
-        // if (!$(this).hasClass("ready-to-drag")) {
-          console.log("Setting up icon " + index);
-          $(this).addClass("original-order-" + index);
-          $(this).find("img").clone().addClass('original-order-' + index).attr('data-original-order', index).attr('draggable','false').appendTo('#draggable-grid').wrap('<div class="brick small draggable-icon original-order-' + index + '"></div>');
-          // todo: add text, colour, etc.
-          $('.draggable-icon.original-order-' + index).attr('data-original-order', index).append('<div class="controls"><div class="edit">Edit</div><div class="remove">Remove</div></div>');
-        // }
+        var background_color = $(this).find('.field--name-field-color').text();
+        var icon_title = $(this).find('.inline-entity-form-node-label').text();
+        var text_above = $(this).find('.field--name-field-text-above-icon').text();
+        var text_below = $(this).find('.field--name-field-text-below-icon').text();
+        var this_image = $(this).find("img").attr('src');//.attr('draggable','false');
+        console.log(this_image);
+
+        console.log("Setting up icon " + index + '("' + icon_title + '")');
+
+        $(this).addClass("original-order-" + index);
+        $(this).attr('data-original-order', index);
+
+        $('#draggable-grid').addClass('view-icons-on-this-board').append('<div class="views-row brick small draggable-icon original-order-' + index + '"></div>');
+
+        // format the icon.
+        $('.draggable-icon.original-order-' + index).append('<div class="views-field-field-text-above-icon">' + text_above + '</div>');
+        $('.draggable-icon.original-order-' + index).append('<div class="views-field-field-image"><img src="' + this_image + '"/></div>');
+        // $('.draggable-icon.original-order-' + index + ' .views-field-field-image').append(this_image);
+        $('.draggable-icon.original-order-' + index).append('<div class="views-field-field-text-below-icon">' + text_below + '</div>');
+        $('.draggable-icon.original-order-' + index).append('<div class="views-field-field-color"><div class="field-content">' + background_color + '</div></div>');
+        $('.draggable-icon.original-order-' + index).attr('data-original-order', index);
+        $('.draggable-icon.original-order-' + index).css("background-color", background_color);
+        $('.draggable-icon.original-order-' + index).append('<div class="controls"><div class="edit">Edit</div><div class="remove">Remove</div></div>');
       });
+      // End intitialze draggable grid.
+
+      formatViewBoardNode();
 
       /////////////////////////
       // Start column slider //
@@ -264,20 +285,25 @@
       var handle = $('#image-scale-slider .ui-slider-handle');
       var imageScaleSlider = $("#image-scale-slider").slider({
         create: function() {
-          handle.text($(this).slider("value"));
+          handle.text(Math.round($(this).slider("value") * 100) + "%");
         },
         value: imageScaleSliderTextbox.val(),
-        min: 0.0,
-        max: 2.0,
-        range: "min",
+        min: 0.1,
+        max: 3.0,
+        // range: "min",
         step: 0.1,
         slide: function(event, ui) {
           console.log("image slider set to " + ui.value);
-          handle.text(ui.value);
+          handle.text(Math.round(ui.value * 100) + "%");
           imageScaleSlider.val(Number(ui.value));
           imageScaleSliderTextbox.val(ui.value);
         }
       });
+
+      // and finally, we only show the image scale slider for authenticated users if there's an image.
+      if ($('.image-preview').length > 0) {
+        $('.field--name-field-image-scale').css("display", "block");
+      }
     }
     else {
       console.log("There is already a slider for the image scale field.");
@@ -299,18 +325,26 @@
   /////////////////////////////////////////////////////////
   // clicking the "edit" button on an icon in the grid triggers a click on the
   // "edit" button for the corresponding entry in the hidden inline entity form table
+  // TODO: FORMAT THIS FOR DIVS, NOT IMAGES.
   $(document).on("click", ".draggable-icon .edit", function(event) {
-    var img_src = $(this).parents('.draggable-icon').find('img').attr('src');
-    console.log("looking for this icon: " + img_src);
-    $('.field--name-field-image > img[src="' + img_src +'"]').parents('.ief-row-entity').find('.ief-entity-operations input[value="Edit"]').mousedown();
+    // var img_src = $(this).parents('.draggable-icon').find('img').attr('src');
+    // console.log("looking for this icon: " + img_src);
+    // $('.field--name-field-image > img[src="' + img_src +'"]').parents('.ief-row-entity').find('.ief-entity-operations input[value="Edit"]').mousedown();
+
+    var original_order = $(this).parents('.draggable-icon').attr("data-original-order");
+    console.log("looking for icon #" + original_order);
+    $('tr.original-order-' + original_order).find('.ief-entity-operations input[value="Edit"]').mousedown();
   });
 
   // clicking the "remove" button on an icon in the grid triggers a click on the
   // "remove" button for the corresponding entry in the hidden inline entity form table
   $(document).on("click", ".draggable-icon .remove", function(event) {
-    var img_src = $(this).parents('.draggable-icon').find('img').attr('src');
-    console.log("looking for this icon: " + img_src);
-    $('.field--name-field-image > img[src="' + img_src +'"]').parents('.ief-row-entity').find('.ief-entity-operations input[value="Remove"]').mousedown();
+    // var img_src = $(this).parents('.draggable-icon').find('img').attr('src');
+    // console.log("looking for this icon: " + img_src);
+    // $('.field--name-field-image > img[src="' + img_src +'"]').parents('.ief-row-entity').find('.ief-entity-operations input[value="Remove"]').mousedown();
+    var original_order = $(this).parents('.draggable-icon').attr("data-original-order");
+    console.log("looking for icon #" + original_order);
+    $('tr.original-order-' + original_order).find('.ief-entity-operations input[value="Remove"]').mousedown();
   });
   ////////////////////////////
   // End board editing page //
@@ -320,19 +354,22 @@
   ////////////////////////////////////////////////////////
   // Gridly (https://github.com/ksylvest/jquery-gridly) //
   ////////////////////////////////////////////////////////
-  // Gridly callback functions:
+  // Gridly callback functions
+  // 1. Called before the drag and drop starts with the elements in their starting position.
   var reordering = function($grid_icons) {
-    // Called before the drag and drop starts with the elements in their starting position.
-    console.log("Reordering.");
+    // console.log("Reordering the grid.");
   };
+  // 2. Called after the drag and drop ends with the elements in their ending position.
   var reordered = function($grid_icons) {
-    // Called after the drag and drop ends with the elements in their ending position.
-    console.log("Reordered.");
+    console.log("The grid has been reordered.");
 
-    $grid_icons.each(function(count) {
-      var current_icon_image = $grid_icons[count].firstChild.currentSrc; // do we need this line?
-      var current_icon_original_order = $grid_icons[count].firstChild.dataset.originalOrder;
-      $('#edit-field-icon-entities-' + current_icon_original_order + '-delta').val(count).change(); // do we need this line?
+    // Update the "sort order" select boxes in the IEF table.
+    $grid_icons.each(function(index) {
+      var current_icon_original_order = $grid_icons[index].dataset.originalOrder;
+      // console.log("I'm going to look for icon number " + index);
+      $('#edit-field-icon-entities-' + current_icon_original_order + '-delta').css("border", '1px solid red');
+      // console.log("Found " + $('#edit-field-icon-entities-' + current_icon_original_order + '-delta').val());
+      $('#edit-field-icon-entities-' + current_icon_original_order + '-delta').val(index).change();
     });
   }
 
@@ -397,7 +434,7 @@
       $('.view-icons-on-this-board .views-row').each(function() {
         // 1. Change the img src to the background.
         var image_url = $(this).find("img").attr("src");
-        $(this).css('background-image', 'url("' + image_url + '")');
+        $(this).find('.views-field-field-image').css('background-image', 'url("' + image_url + '")');
 
         // If there's no image, just make the text flow rather than be absolutely
         // positioned to the top and bottom.
@@ -410,8 +447,22 @@
         if (!image_scale) {
           image_scale = 1;
         }
-        var image_size_native = $(this).find('img').attr('width');
-        $(this).css('background-size', image_scale * image_size_native);
+        var image_size_native_width = $(this).find('img').attr('width');
+        var image_size_native_height = $(this).find('img').attr('height');
+
+        var image_size_native = image_size_native_width;
+        if (image_size_native_height > image_size_native_width) {
+          image_size_native = image_size_native_height;
+        }
+
+        console.log("Native icon size: " + image_size_native_width + " by " + image_size_native_height);
+
+
+        // get the width of the current icon tile (.views-row), then calculate the proportion of the tile at 1000px wide.
+        var image_width_as_percentage = image_size_native / $(this).width() * 100;
+
+        console.log("Icon size: " + image_width_as_percentage);
+        $(this).find('.views-field-field-image').css('background-size', 33.33 * image_scale + "%"); // default image width is 33.33% of the icon (.views-row).
 
         // 3. Set the background colour of this icon.
         var background_color_for_this_icon = $(this).find('.views-field-field-color .field-content').text();
@@ -440,9 +491,6 @@
     return (yiq >= 128) ? 'black' : 'white';
   }
 
-  // function populateEntityReferenceField() {
-  //   $('')
-  // }
 
   /////////////////////////////////////
   // Set up the Better Icon Lookup view

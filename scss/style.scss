@@ -51,7 +51,15 @@ nav.navbar > .container {
   width: 100%;
 }
 // End main menu
+// End header
+//////////////
 
+////////////////////////
+// Start content area //
+////////////////////////
+main {
+  margin-bottom: 4em;
+}
 
 // Global tab settings
 .tabs {
@@ -64,9 +72,17 @@ nav.navbar > .container {
 }
 // End global tab settings.
 
-// Start footer
-.region-footer {
-  padding-bottom: 100px;
+//////////////////////
+// End main content //
+//////////////////////
+
+//////////////////
+// Start footer //
+//////////////////
+footer {
+  border-top: 1px solid gray;
+  margin-top: 2em;
+  // padding-bottom: 100px;
 }
 // End footer
 
@@ -88,6 +104,30 @@ nav.navbar > .container {
   }
 
 }
+
+// force CKeditor to be larger; by default, it's only one line high
+.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,
+.ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
+  background-color: $color_grey_light;
+}
+
+.ck-content {
+  min-height: 200px;
+}
+
+// for admin users only: the "no HTML tags allowed/lines break automatically/etc" help text under Plain Text textareas:
+.filter-guidelines-plain_text .tips {
+  padding-left: 1rem;
+}
+
+
+// end CKEditor changes
+
+// Add padding to "Add new icon" and "Add existing icon" when there aren't any.
+#edit-field-icon-actions {
+  padding: 10px;
+}
+
 // The icon IEF disappears on /node/add/board for some reason, unless we do this:
 #edit-field-icon-wrapper {
 
@@ -108,6 +148,29 @@ nav.navbar > .container {
   }
 }
 
+// Sliders for image size on icons and number of columns on boards.
+// Slider handles
+.ui-slider {
+  margin-right: 35px;
+
+  .ui-slider-handle {
+    // min-width: 3em;
+    // height: 1.6em;
+    // top: 50%;
+    // margin-top: -.8em;
+    // text-align: center;
+    // line-height: 1.6em;
+    width: auto;
+    height: auto;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    text-align: center;
+  }
+}
+
+
 
 // cleaning up the inline entity form editor
 // hide the drag handle.
@@ -123,14 +186,40 @@ a.tabledrag-handle .handle {
 
 // hide the default ief form
 #edit-field-icon-wrapper .tabledrag-toggle-weight-wrapper,
-#edit-field-icon-wrapper thead,
 .ief-form-bottom legend,
-tr.ief-row-entity td,
-#edit-field-icon-wrapper .form-item-field-icon-actions-bundle // the content type select box
+#edit-field-icon-wrapper .form-item-field-icon-actions-bundle, // the content type select box
+.field--name-field-image-scale input, // Image scale field slider
+#edit-body-0-format, // "about text formats" under the Body field textarea
+#edit-field-number-of-columns-wrapper #edit-field-number-of-columns, // number of columns field and slider
+.form-item-field-icon-form-0-status-value, // published checkbox on buttons
+.field--name-field-image-scale, // the image scale field (including label and slider) should be hidden if there isn't an image.
 {
   display: none;
-  border: 1px solid red;
+  body.admin &,
+  body.role-admin & {
+    display: block;
+    border: 1px solid red;
+  }
 }
+
+tr.ief-row-entity td {
+  display: none;
+  body.admin &,
+  body.role-admin & {
+    display: table-cell;
+    border: 1px solid red;
+  }
+}
+
+#edit-field-icon-wrapper thead {
+  display: none;
+  body.admin &,
+  body.role-admin & {
+    display: table-header-group;
+    border: 1px solid red;
+  }
+}
+
 
 tr.ief-row-entity td {
   &[colspan="2"],
@@ -175,13 +264,15 @@ tr.ief-row-entity td {
 }
 
 .draggable-icon {
-  @include icon_tile();
+  // @include icon_tile();
   // position: relative;
   cursor: grab;
   user-select: none;
 
-  width: 150px;
-  height: 150px;
+  background-repeat: no-repeat;
+  background-position: center;
+  // width: 150px;
+  // height: 150px;
 
   &:dragging {
     cursor: grabbing;
@@ -209,11 +300,11 @@ tr.ief-row-entity td {
     top: 0;
   }
 
-  img {
-    object-fit: contain;
-    max-width: 100%;
-    max-height: 100%;
-  }
+  // img {
+  //   object-fit: contain;
+  //   max-width: 100%;
+  //   max-height: 100%;
+  // }
 
   &:focus,
   &:hover {
@@ -221,6 +312,10 @@ tr.ief-row-entity td {
     .remove {
       opacity: 1;
     }
+  }
+
+  img {
+    display: none;
   }
 }
 
@@ -234,15 +329,6 @@ tr.ief-row-entity td {
   height: 600px;
 }
 // End grid on board edit page
-
-// start slider on board edit page-edit
-#edit-field-number-of-columns-wrapper {
-  #edit-field-number-of-columns {
-    display: none;
-  }
-}
-
-
 ////////////////////////////
 // END board editing page //
 ////////////////////////////
@@ -334,7 +420,8 @@ body.full-screen-preview {
 }
 
 // Start icon grid on board view page (not edit!)
-#block-views-block-icons-on-this-board-block-1 {
+#block-views-block-icons-on-this-board-block-1,
+.view-icons-on-this-board {
   width: 100%;
   float: left;
 
@@ -394,11 +481,14 @@ body.full-screen-preview {
   }
 
   .views-field-field-image {
-    // width: 50%;
     max-width: 100%;
     max-height: 100%;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     display: flex;
+    background-position: center;
+    background-repeat: no-repeat;
     * {
       max-width: 100%;
       max-height: 100%;
@@ -474,6 +564,9 @@ body.full-screen-preview {
     margin-left: 0;
   }
 }
+
+
+// Start footer
 
 // Right Sidebar
 .region-sidebar-second {
