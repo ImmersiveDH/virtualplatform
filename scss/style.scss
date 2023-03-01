@@ -102,7 +102,11 @@ footer {
   .invalid-feedback {
     display: block;
   }
+}
 
+.form-type-vertical-tabs {
+  width: 100%;
+  float: left;
 }
 
 // force CKeditor to be larger; by default, it's only one line high
@@ -119,9 +123,11 @@ footer {
 .filter-guidelines-plain_text .tips {
   padding-left: 1rem;
 }
+//////////////////////////
+// end CKEditor changes //
+//////////////////////////
 
 
-// end CKEditor changes
 
 // Add padding to "Add new icon" and "Add existing icon" when there aren't any.
 #edit-field-icon-actions {
@@ -148,6 +154,20 @@ footer {
   }
 }
 
+// Accordion on Button edting page/icon editing page-edit
+#group-image {
+  .accordion-item > h2 {
+    margin-top: 0;
+    border-bottom: 0;
+  }
+
+  .form-item:first-child {
+    margin-top: 0;
+  }
+}
+// End accordion
+//////////////////
+
 // Sliders for image size on icons and number of columns on boards.
 // Slider handles
 .ui-slider {
@@ -170,8 +190,6 @@ footer {
   }
 }
 
-
-
 // cleaning up the inline entity form editor
 // hide the drag handle.
 .field-multiple-drag {
@@ -185,6 +203,7 @@ a.tabledrag-handle .handle {
 }
 
 // hide the default ief form
+#edit-field-number-of-columns-wrapper,
 #edit-field-icon-wrapper .tabledrag-toggle-weight-wrapper,
 .ief-form-bottom legend,
 #edit-field-icon-wrapper .form-item-field-icon-actions-bundle, // the content type select box
@@ -192,8 +211,8 @@ a.tabledrag-handle .handle {
 #edit-body-0-format, // "about text formats" under the Body field textarea
 #edit-field-number-of-columns-wrapper #edit-field-number-of-columns, // number of columns field and slider
 .form-item-field-icon-form-0-status-value, // published checkbox on buttons
-.field--name-field-image-scale, // the image scale field (including label and slider) should be hidden if there isn't an image.
-{
+.field--name-field-image-scale input, // the image scale field (including label and slider) should be hidden if there isn't an image.
+.field--name-field-number-of-columns {
   display: none;
   body.admin &,
   body.role-admin & {
@@ -261,6 +280,7 @@ tr.ief-row-entity td {
   border: 1px solid #ccc;
   width: 100%;
   position: relative;
+  margin-bottom: 2em;
 }
 
 .draggable-icon {
@@ -329,9 +349,12 @@ tr.ief-row-entity td {
   height: 600px;
 }
 // End grid on board edit page
+
 ////////////////////////////
 // END board editing page //
 ////////////////////////////
+
+
 
 ///////////////////////////
 // start board display page
@@ -375,11 +398,27 @@ tr.ief-row-entity td {
 body.full-screen-preview {
   padding: 0 !important;
   margin: 0 !important;
+  background: transparent;
+
+  // When someone shares the link to the full-screen preview of the board
+  // with a user who isn't logged in, we don't want to see the toggle button.
+  // (This includes if it's in an iframe in the 3D environment.)
+  // This is not for security reasons, it's just for usability.
+  &.role-anonymous {
+    #block-fullscreenboardbutton {
+      display: none;
+    }
+  }
 
   .container {
     width: 100%;
     max-width: 100%;
+    padding: 0;
   }
+
+  // .view-icons-on-this-board {
+  //   border: 1px solid $black;
+  // }
 
   // Hide all the extraneous stuff when full page preview is on.
   #block-virtualplatform-page-title,
@@ -397,12 +436,12 @@ body.full-screen-preview {
     display: block;
     max-width: 100vw;
     width: 100%;
-    height: 100vh;
+    // height: 100vh;
     position: absolute;
     top: 0;
     left: 0;
-    margin-top: 14px;
-    margin-bottom: 14px;
+    // margin-top: 14px;
+    // margin-bottom: 14px;
     z-index: 100;
   }
 }
@@ -411,7 +450,6 @@ body.full-screen-preview {
 
 // hide number of columns and "display in public board list" on board pages
 // (we don't remove the field because we need it to calculate the board display using JavaScript)
-.field--name-field-number-of-columns,
 .field--name-field-public {
   display: none;
   .page-edit & {
@@ -428,10 +466,10 @@ body.full-screen-preview {
   .view-content {
     display: block;
     width: 100%;
-    background-size: 12.5% 25%;
-    background-image:
-      linear-gradient(to right, grey 1px, transparent 1px),
-      linear-gradient(to bottom, grey 1px, transparent 1px);
+    // background-size: 12.5% 25%;
+    // background-image:
+    //   linear-gradient(to right, grey 1px, transparent 1px),
+    //   linear-gradient(to bottom, grey 1px, transparent 1px);
   }
   .views-row {
     @include icon-tile();
@@ -472,6 +510,12 @@ body.full-screen-preview {
       }
     }
 
+    //
+    &.highlighted-icon {
+      border: 3px solid blue;
+    }
+
+    // Hide all the default elements we need for formatting the board, but that we don't want to see.
     img,
     .views-field-field-image-scale,
     .views-field-title,
@@ -481,8 +525,8 @@ body.full-screen-preview {
   }
 
   .views-field-field-image {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 400px;
+    max-height: 400px;
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -507,28 +551,194 @@ body.full-screen-preview {
   width: 100%;
   float: left;
 
-  .views-row {
+  .view-content {
     width: 100%;
     float: left;
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  .icon-and-text,
-  .next-to-icon {
-    float: left;
+  .views-row {
+    // width: 100%;
+    // float: left;
+    margin: 0 10px 20px 10px;
+    width: calc(16.66% - 18px);
+    max-width: calc(16.66% - 18px);
+    box-shadow: 0 0 5px gray;
+    border: 1px solid $color_grey_dark;
+    background: $color_grey_light;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 999px) {
+      width: calc(33.33% - 18px);
+      max-width: calc(33.33% - 18px);
+      &:nth-child(3n+1) {
+        margin-left: 0;
+      }
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+    }
+
+    @media (min-width: 1000px) {
+      width: calc(16.66% - 18px);
+      max-width: calc(16.66% - 18px);
+
+      &:nth-child(6n+1) {
+        margin-left: 0;
+      }
+      &:nth-child(6n) {
+        margin-right: 0;
+      }
+    }
   }
+
+  .views-field {
+    padding: 0 5px;
+    font-size: 13px;
+
+    &:last-child {
+      padding-bottom: 5px;
+      // border-bottom: 1px solid $color_grey_dark;
+    }
+
+    &.views-field-nothing {
+      padding: 0;
+    }
+  }
+
+  .views-field-title {
+    font-size: 1.4em;
+    line-height: 1.1em;
+    padding-top: 10px;
+    padding-bottom: 5px;
+  }
+
+  .views-label {
+    margin-right: 0.25em;
+    // font-weight: bold;
+    white-space: nowrap;
+  }
+
+  .views-field-created {
+    flex-grow: 10;
+  }
+
+  .views-field-uid .field-content {
+    font-weight: bold;
+  }
+
+  .views-field-uid .field-content {
+    display: inline-block;
+  }
+
+  .views-field-field-icon-tag {
+    padding-top: 15px;
+    float: left;
+    width: 100%;
+
+    .views-label {
+      display: none;
+    }
+
+    ul {
+      display: block;
+      list-style: none;
+      margin: 0;
+    }
+
+    li {
+      display: block;
+      float: left;
+      margin: 0 2px 6px 0;
+      line-height: 1.7em;
+
+      a {
+        background: lighten($color_blue_light, 14);
+        color: $color_black;
+        text-decoration: none;
+        border-radius: 5px;
+        white-space: nowrap;
+        padding: 2px 4px;
+        border: 1px solid $color_blue_light;
+
+        &:active,
+        &:focus,
+        &:hover {
+          color: $color_black;
+          background: $color_blue_light;
+        }
+      }
+    }
+  }
+
+  // actual icon
+  // .icon-and-text,
+  // .next-to-icon {
+  //   float: left;
+  // }
 
   .icon-and-text {
-    color: #555;
-    background: #ddd;
-    border: 1px solid #ccc;
+    // color: #555;
+    // background: #ddd;
+    // border-top: 1px solid $color_grey_dark;
+    border-bottom: 1px solid $color_grey_dark;
     box-sizing: border-box;
     text-align: center;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 100%;
+
+    // we don't want text to overflow each icon.
+    position: relative;
+
+    .views-field-field-text-above-icon,
+    .views-field-field-text-below-icon {
+      width: 100%; // this is so FitText works correctly.
+      max-width: 100%;
+      position: absolute;
+      // white-space: nowrap;
+    }
+    .views-field-field-text-above-icon {
+      top: 2%;
+    }
+    .views-field-field-text-below-icon {
+      bottom: 2%;
+    }
+
+    // when there's no image, we want the text blocks to just come one after another.
+    &.no-image {
+      .views-field-field-text-above-icon,
+      .views-field-field-text-below-icon {
+        position: relative;
+        top: auto;
+        bottom: auto;
+      }
+
+      .views-field-field-image,
+      img {
+        display: none;
+      }
+    }
   }
+
+  .views-field-field-image {
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  // hide the fields that control the appearance of the
+  img,
+  .views-field-field-image-scale,
+  .views-field-field-color {
+    display: none;
+  }
+
 
   .views-field-nid {
     border: 1px solid red;

@@ -11,11 +11,29 @@
   //   }
   // };
 
+
   $(document).ready(function() {
     // var url_found = UrlExists("https://virtual.wintersandassociates.com/sdfsadfs");
     // if (!url_found) {
     //   console.log("this URL doesn't exist.");
     // }
+
+    // if ($(".view-better-icon-lookup").length > 0) {
+      // const better_icon_lookup_element = document.querySelector(".view-better-icon-lookup");
+      const better_icon_lookup_element = document.querySelector(".region-content");
+      const better_icon_lookup_observer = new MutationObserver(() => {
+        console.log("The Better Icon Lookup view changed.");
+        setupBetterIconLookupView();
+        formatIconViews();
+
+        // var timeout_ajax;
+        // clearTimeout(timeout_ajax);
+        // timeout_ajax = setTimeout(formatIconViews, 50);
+      });
+      better_icon_lookup_observer.observe(better_icon_lookup_element, {subtree: true, childList: true});
+    // }
+
+
 
     ////////////////////////
     // Start color picker //
@@ -42,13 +60,18 @@
     function turnOnFullScreenPreview() {
       $("body").addClass('full-screen-preview');
       window.location.hash = "full-screen";
+      $("#block-fullscreenboardbutton .btn").text("Exit full screen view");
       formatViewBoardNode();
     }
 
     function turnOffFullScreenPreview() {
-      $("body").removeClass('full-screen-preview');
-      window.location.href = window.location.href.split('#')[0];
-      formatViewBoardNode();
+      // only toggle off the full screen preview if we're logged in.
+      if ($("body.user-logged-in").length > 0) {
+        $("body").removeClass('full-screen-preview');
+        $("#block-fullscreenboardbutton .btn").text("Full screen view");
+        window.location.href = window.location.href.split('#')[0];
+        formatViewBoardNode();
+      }
     }
 
     function toggleFullScreenPreview() {
@@ -106,9 +129,10 @@
         // console.log('callback that runs when observer is triggered');
         console.log("The inline entity reference field changed.");
         // check if the "add existing icon" form is open. if so, we want to
-        if ($('.fieldset-legend:contains("Add existing Icon")').length > 0) {
+        if ($('.fieldset-legend:contains("Add existing button")').length > 0) {
           console.log("We are adding an existing icon.");
           $('#block-views-block-better-icon-lookup-block-1').css("display","block");
+          formatIconViews();
         }
         else {
           console.log("We are not adding an existing icon.");
@@ -123,10 +147,9 @@
         // Restart the color picker again.
         initColorPicker();
 
-        // Reinitialize the entire grid.
-          initializeIconGrid();
-          // current_number_of_icons = icon_count;
-        // }
+        // Reinitialize the entire draggable grid.
+        initializeIconGrid();
+
 
         changeContentItemToIcon();
         addScaleSlider(); // add the icon scale slider if it doesn't already exist.
@@ -134,7 +157,7 @@
       observer.observe(elementToObserve, {subtree: true, childList: true});
     }
 
-    // Change "Content item" on the buttns "Create content item", "Add existing content item", and "Add new content item" to read "icon" instead.
+    // 3. Change "Content item" on the buttns "Create content item", "Add existing content item", and "Add new content item" to read "icon" instead.
     function changeContentItemToIcon() {
       // buttons
       $('input[value="Add new content item"]').attr('value', 'Add new button');
@@ -143,20 +166,15 @@
       $('input[value="Create content item"]').attr('value', 'Create button');
       $('input[value="Update content item"]').attr('value', 'Update button');
 
-
       // headings/legends
       $(".fieldset-legend:contains(Add new content item)").text("Add new button");
       $(".fieldset-legend:contains(Add existing content item)").text("Add existing button");
       $(".fieldset-legend:contains(Add content item)").text("Add button");
       $(".ief-form-bottom label:contains(Content item)").text("Button name");
-
-      // add a label to "create an icon".
-      // ief-form
-
     }
 
-    // make links in /icons view sort taxonomy terms in the /icons view instead of the default taxonomy term view.
-    //https://virtual.wintersandassociates.com/icons?title=&tid=Flaticon+Animal+Pack&field_public_value=All
+    // 4. make links in /icons view sort taxonomy terms in the /icons view instead of the default taxonomy term view.
+    // https://virtual.wintersandassociates.com/icons?title=&tid=Flaticon+Animal+Pack&field_public_value=All
     $('.views-field-term-node-tid a').click(function(e) {
       e.preventDefault();
       var this_term = $(this).text();
@@ -183,7 +201,8 @@
         var text_above = $(this).find('.field--name-field-text-above-icon').text();
         var text_below = $(this).find('.field--name-field-text-below-icon').text();
         var this_image = $(this).find("img").attr('src');//.attr('draggable','false');
-        console.log(this_image);
+        var image_scale = $(this).find('.field--name-field-image-scale').text();
+        // console.log(this_image);
 
         console.log("Setting up icon " + index + '("' + icon_title + '")');
 
@@ -194,7 +213,16 @@
 
         // format the icon.
         $('.draggable-icon.original-order-' + index).append('<div class="views-field-field-text-above-icon">' + text_above + '</div>');
-        $('.draggable-icon.original-order-' + index).append('<div class="views-field-field-image"><img src="' + this_image + '"/></div>');
+
+        if (this_image) {
+          $('.draggable-icon.original-order-' + index).append('<div class="views-field-field-image"><img src="' + this_image + '"/></div>');
+        }
+        else {
+          $('.draggable-icon.original-order-' + index).addClass("no-image");
+        }
+
+        $('.draggable-icon.original-order-' + index).append('<div class="views-field views-field-field-image-scale"><div class="field-content">' + image_scale + '</div></div>');
+
         // $('.draggable-icon.original-order-' + index + ' .views-field-field-image').append(this_image);
         $('.draggable-icon.original-order-' + index).append('<div class="views-field-field-text-below-icon">' + text_below + '</div>');
         $('.draggable-icon.original-order-' + index).append('<div class="views-field-field-color"><div class="field-content">' + background_color + '</div></div>');
@@ -256,13 +284,103 @@
     // // Board pages: Set up grid on view page, not edit page
     formatViewBoardNode();
 
+    formatIconViews();
+
     // if ($('#block-views-block-icons-on-this-board-block-1').length > 0) {
     //   var number_of_columns_in_grid = $('.field--name-field-number-of-columns .field__item').text();
     //   var tile_width = 100 / number_of_columns_in_grid;
     //   $('#block-views-block-icons-on-this-board-block-1 .views-row').css("width", tile_width + '%');
     // }
 
+    ////////////////////////////////////
+    // When this page is in an iframe //
+    ////////////////////////////////////
+
+    // Send message to the parent...
+    // 1. When hovering over an icon
+    if (isInIframe) {
+      // communicate with iframes
+      $('.view-icons-on-this-board .views-row').hover(
+        function() {
+          var this_index = $(this).index();
+          window.top.postMessage('icon-selected' + '|||' + this_index, '*');
+        },
+        function() {
+          window.top.postMessage('icon-selected' + '|||' + 'none', '*');
+        }
+      );
+    }
+
+    // Recieve message from parent
+    // 1. comes in the form of 'highlight-icon|||10'
+    //    This tells us to add the class 'highlighted-icon' to the 10th icon on this board.
+    window.onmessage = function(e) {
+      var sanitized_input = e.data.split("|||");
+      if (sanitized_input[0] == 'highlight-icon') {
+        console.log("highlighting icon #" + sanitized_input[1]);
+        $('.view-icons-on-this-board .views-row').removeClass("highlighted-icon");
+        $('.view-icons-on-this-board .views-row:eq(' + sanitized_input[1] + ')').addClass("highlighted-icon");
+      }
+    };
   });
+
+  /////////////////////////////////
+  // Start AJAX node create/view //
+  /////////////////////////////////
+  function getNode() {
+    ajaxExecute = $.ajax({
+      url: "https://virtual.wintersandassociates.com/node/22?_format=json",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      success: function(data, status, xhr) {
+        console.log("Got the node!");
+        console.log(data);
+      }
+    });
+  }
+
+  function createNode() {
+    var package = {}
+    package.type = [{'value':"page"}]
+    package.title = [{'value':'t1'}]
+    package.body = [{'value':'b1'}]
+    package._links = {"type":{"href":"https://virtual.wintersandassociates.com/entity/page"}}
+
+    ajaxExecute = Drupal.ajax({
+      url: "https://virtual.wintersandassociates.com/entity/node",
+      method: "POST",
+      headers: {
+        data: JSON.stringify(package),
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      success: function(data, status, xhr) {
+        console.log("Created the node!");
+        console.log(data);
+      }
+    });
+  }
+
+  var ajaxExecute;
+  $(document).on("click", ".view-icons-on-this-board .views-row", function(event) {
+    console.log("Clicked on an icon.");
+    createNode();
+    // getNode();
+  });
+
+  ajaxExecute.done(function() {
+    alert( "success" );
+  })
+  .fail(function() {
+      alert( "error" );
+  })
+  ///////////////////////////////
+  // End AJAX node create/view //
+  ///////////////////////////////
+
+
 
   /////////////////////////////
   // Start image size slider //
@@ -274,10 +392,10 @@
       var imageScaleTextboxLabel = $(".node-form label:contains('Image Scale'), label:contains('Image scale')");
 
       // 2. The element to add.
-      var sliderToAppendToScaleField = '<div id="image-scale-slider"><div class="ui-slider-handle"></div></div>';
+      var sliderToAppendToScaleField = '<div id="image-scale-slider-wrapper"><div id="image-scale-slider"><div class="ui-slider-handle"></div></div></div>';
       // 1. Board edit page (using inline entity form)
       // as well as icon edit page (not using inline entity form)
-      imageScaleTextboxLabel.parent().parent().after(sliderToAppendToScaleField);
+      imageScaleTextboxLabel.parent().append(sliderToAppendToScaleField);
 
       // 3. Initialize scale slider
       var imageScaleSliderTextbox = $(imageScaleTextboxLabel).next('input');
@@ -351,6 +469,8 @@
   ////////////////////////////
 
 
+
+
   ////////////////////////////////////////////////////////
   // Gridly (https://github.com/ksylvest/jquery-gridly) //
   ////////////////////////////////////////////////////////
@@ -400,6 +520,7 @@
     $('.gridly').gridly({
       callbacks: { reordering: reordering , reordered: reordered }
     });
+    addEmptyIcons();
   }
 
   // Reinitialize Gridly every time the window resizes.
@@ -412,6 +533,7 @@
 
     // But we can format the "View tab" of board nodes immediately.
     formatViewBoardNode();
+    formatIconViews();
   });
   ////////////////
   // End gridly //
@@ -455,13 +577,15 @@
           image_size_native = image_size_native_height;
         }
 
-        console.log("Native icon size: " + image_size_native_width + " by " + image_size_native_height);
-
-
         // get the width of the current icon tile (.views-row), then calculate the proportion of the tile at 1000px wide.
         var image_width_as_percentage = image_size_native / $(this).width() * 100;
 
-        console.log("Icon size: " + image_width_as_percentage);
+        // This is just for debug purposes. In production, it doesn't matter if the image exists or not.
+        // if (image_size_native_width) {
+        //   console.log("Native icon size: " + image_size_native_width + " by " + image_size_native_height);
+        //   console.log("Icon size: " + image_width_as_percentage);
+        // }
+
         $(this).find('.views-field-field-image').css('background-size', 33.33 * image_scale + "%"); // default image width is 33.33% of the icon (.views-row).
 
         // 3. Set the background colour of this icon.
@@ -475,12 +599,79 @@
         $(".views-field-field-text-above-icon, .views-field-field-text-below-icon").each(function() {
           $(this).width(max_width_individual);
           $(this).fitText();
-
-        // $( .field-content").fitText();
         });
+
+        // 5. if there's fewer than 32 icons (by default), make the board show empty spaces.
+        addEmptyIcons();
       });
     }
   }
+
+  // these are views of icons ONLY. NOT THE BOARD.
+  function formatIconViews() {
+    console.log("formatting icon views.");
+
+    // if ($('.view-better-icon-lookup').length > 0) {
+      // var num_columns = $('.field--name-field-number-of-columns .field__item').text();
+      // var max_width_total = $('.view-icons-on-this-board').width();
+      // var max_width_individual =  Math.floor(max_width_total / num_columns);
+      // console.log("Formatting the icons on this board to " + max_width_individual + "px square.");
+
+      // this ensures the icon is a square.
+      var icon_height = $('.view-better-icon-lookup .views-row:first-child').width();
+      $('.view-better-icon-lookup .views-row .icon-and-text, .view-better-icon-lookup .views-field-field-image').css('height', icon_height);
+
+      $('.view-better-icon-lookup .views-row').each(function() {
+        // 1. Change the img src to the background.
+        var image_url = $(this).find("img").attr("src");
+        $(this).find('.views-field-field-image').css('background-image', 'url("' + image_url + '")');
+
+        // If there's no image, just make the text flow rather than be absolutely
+        // positioned to the top and bottom.
+        if (!image_url) {
+          $(this).find('.icon-and-text').addClass("no-image");
+        }
+
+        // 2. Set the background scale of this icon.
+        var image_scale = $(this).find('.views-field-field-image-scale .field-content').text();
+        if (!image_scale) { // this probably isn't necessary any longer. All icons should have a scale by default.
+          image_scale = 1;
+        }
+        var image_size_native_width = $(this).find('img').attr('width');
+        var image_size_native_height = $(this).find('img').attr('height');
+
+        var image_size_native = image_size_native_width;
+        if (image_size_native_height > image_size_native_width) {
+          image_size_native = image_size_native_height;
+        }
+
+        // get the width of the current icon tile (.views-row), then calculate the proportion of the tile at 1000px wide.
+        var image_width_as_percentage = image_size_native / $(this).find('.views-field-field-image').width() * 100;
+
+        // This is just for debug purposes. In production, it doesn't matter if the image exists or not.
+        // if (image_size_native_width) {
+        //   console.log("Native icon size: " + image_size_native_width + " by " + image_size_native_height);
+        //   console.log("Icon size: " + image_width_as_percentage);
+        // }
+
+        $(this).find('.views-field-field-image').css('background-size', 33.33 * image_scale + "%"); // default image width is 33.33% of the icon (.views-row).
+
+        // 3. Set the background colour of this icon.
+        var background_color_for_this_icon = $(this).find('.views-field-field-color .field-content').text();
+        $(this).find('.icon-and-text').css("background-color", background_color_for_this_icon);
+        // Set text color based on background color.
+        $(this).find('.icon-and-text').css("color", getTextColorBasedOnBackgroundColor(background_color_for_this_icon));
+
+        // 4. Make sure the text doesn't overflow,
+        //    Then run fittext on them.
+        $(".views-field-field-text-above-icon, .views-field-field-text-below-icon").each(function() {
+          $(this).width(icon_height);
+          $(this).fitText();
+        });
+      });
+    // }
+  }
+
 
   // Support function: set the text color based on background color.
   function getTextColorBasedOnBackgroundColor(hexcolor) {
@@ -495,6 +686,7 @@
   /////////////////////////////////////
   // Set up the Better Icon Lookup view
   /////////////////////////////////////
+  // When the form changes, update the icon view AGAIN.
   function setupBetterIconLookupView() {
     // Add a "reset" button to the form.
     // We do this because the default "Reset" button reloads the entire page.
@@ -510,28 +702,34 @@
       $(this).find('.icon-and-text').css("color", getTextColorBasedOnBackgroundColor(background_color_for_this_icon));
     });
   }
-  setupBetterIconLookupView();
-
-  // When the form changes, update the icon view AGAIN.
-  if ($(".view-better-icon-lookup").length > 0) {
-    const better_icon_lookup_element = document.querySelector("#block-views-block-better-icon-lookup-block-1");
-    const better_icon_lookup_observer = new MutationObserver(() => {
-      console.log("The Better Icon Lookup view changed.");
-      setupBetterIconLookupView();
-    });
-    better_icon_lookup_observer.observe(better_icon_lookup_element, {subtree: true, childList: true});
-  }
+  // setupBetterIconLookupView();
 
   // click on an icon in Better Icon Lookup View to make it populate the autocomplete field.
-  $(document).on("click", ".view-better-icon-lookup .views-field-nothing", function(event) {
+  $(document).on("click", ".view-better-icon-lookup .views-field-nothing, .view-better-icon-lookup .use-this-icon", function(event) {
     var icon_title_and_nid = $(this).parent().find('.views-field-nid .field-content').text();
     console.log("Telling the autocomplete field to use '" + icon_title_and_nid + "'.");
-    console.log("There are " + $('.ief-form-bottom .form-autocomplete').length + " autocomplete fields.");
+    // console.log("There are " + $('.ief-form-bottom .form-autocomplete').length + " autocomplete fields.");
     $('.ief-form-bottom .form-autocomplete').val(icon_title_and_nid);
+    $('#block-views-block-better-icon-lookup-block-1').css("display","none");
+
+    $('.ief-form-bottom .ief-entity-submit').mousedown(); // we MUST use Mousedown, not .click() due to Drupal being Drupal.
   });
-  ////////////////////////////////////////
-  // End setup for Better Icon Lookup View
-  ////////////////////////////////////////
+  ///////////////////////////////////////////
+  // End setup for Better Icon Lookup View //
+  ///////////////////////////////////////////
+
+  function addEmptyIcons() {
+    var maximum_number_of_icons = 32;
+
+    // $('.view-icons-on-this-board, .view-icons-on-this-board .view-content').css('height', board_height);
+    var num_icons = $('.view-icons-on-this-board .views-row').length;
+    if (num_icons < maximum_number_of_icons) {
+      var icons_to_add = maximum_number_of_icons - num_icons;
+      for (let i = 0; i < icons_to_add; i++) {
+        $('.view-icons-on-this-board .views-row:last-child').after('<div class="empty-icon views-row brick small draggable-icon" draggable="false" onmousedown="return false" ondragstart="return false;" ondrop="return false;"></div>');
+      }
+    }
+  }
 
 
   function UrlExists(url) {
@@ -542,6 +740,16 @@
       return true;
     }
     else {
+      return false;
+    }
+  }
+
+
+  // Check if we're in an iframe
+  function isInIframe() {
+    if (window.location !== window.parent.location) {
+      return true;
+    } else {
       return false;
     }
   }
