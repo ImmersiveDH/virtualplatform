@@ -11571,5 +11571,35 @@ body.admin .ck-content #edit-field-icon-wrapper thead, body.role-admin .ck-conte
 .ck-content body.path-icons.admin .form-item-field-public-value {
   display: block;
 }
+.ck-content #full-screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.25);
+  color: white;
+  display: none;
+}
+.loading-spinner .ck-content #full-screen-overlay {
+  display: flex;
+}
+.ck-content .full-screen-container {
+  margin: 0;
+  position: absolute;
+  z-index: 1000;
+  top: 50%;
+  left: calc(50% - 35px);
+  width: 70px;
+  height: 70px;
+  font-size: 60px;
+}
+.ck-content .full-screen-container .spinner-border {
+  width: 100%;
+  height: 100%;
+}
+.ck-content .full-screen-container .spinner-border .sr-only {
+  display: none;
+}
 
 /*# sourceMappingURL=ck5style.css.map */

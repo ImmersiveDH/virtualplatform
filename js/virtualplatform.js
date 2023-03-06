@@ -65,12 +65,15 @@
     }
 
     function turnOffFullScreenPreview() {
-      // only toggle off the full screen preview if we're logged in.
-      if ($("body.user-logged-in").length > 0) {
-        $("body").removeClass('full-screen-preview');
-        $("#block-fullscreenboardbutton .btn").text("Full screen view");
-        window.location.href = window.location.href.split('#')[0];
-        formatViewBoardNode();
+      // Only turn off the full screen preview if we're currently in full screen preview mode.
+      if ($("body").hasClass('full-screen-preview')) {
+        // only toggle off the full screen preview if we're logged in.
+        if ($("body.user-logged-in").length > 0) {
+          $("body").removeClass('full-screen-preview');
+          $("#block-fullscreenboardbutton .btn").text("Full screen view");
+          window.location.href = window.location.href.split('#')[0];
+          formatViewBoardNode();
+        }
       }
     }
 
@@ -103,6 +106,25 @@
     // End full screen preview //
     /////////////////////////////
 
+
+    // Start spinner/throbber overlay toggle
+    function turnOffSpinner() {
+      $("body").removeClass('loading-spinner');
+    }
+
+    function turnOnSpinner() {
+      $("body").addClass('loading-spinner');
+    }
+
+    function toggleSpinner() {
+      if ($("body").hasClass('loading-spinner')) {
+        turnOffSpinner();
+      }
+      else {
+        turnOnSpinner();
+      }
+    }
+    // End spinner/throbber
 
 
     var current_number_of_icons = $('.ief-row-entity').length;
@@ -303,9 +325,12 @@
       $('.view-icons-on-this-board .views-row').hover(
         function() {
           var this_index = $(this).index();
+          $('.view-icons-on-this-board .views-row').removeClass("highlighted-icon");
+          $('.view-icons-on-this-board .views-row:eq(' + this_index + ')').addClass("highlighted-icon");
           window.top.postMessage('icon-selected' + '|||' + this_index, '*');
         },
         function() {
+          $('.view-icons-on-this-board .views-row').removeClass("highlighted-icon");
           window.top.postMessage('icon-selected' + '|||' + 'none', '*');
         }
       );
@@ -328,7 +353,7 @@
   // Start AJAX node create/view //
   /////////////////////////////////
   function getNode() {
-    ajaxExecute = $.ajax({
+    var ajaxExecute = $.ajax({
       url: "https://virtual.wintersandassociates.com/node/22?_format=json",
       method: "GET",
       headers: {
@@ -339,43 +364,118 @@
         console.log(data);
       }
     });
+    ajaxExecute.done(function() {
+      alert( "success" );
+    })
+    .fail(function() {
+        alert( "error" );
+    })
   }
 
   function createNode() {
-    var package = {}
-    package.type = [{'value':"page"}]
-    package.title = [{'value':'t1'}]
-    package.body = [{'value':'b1'}]
-    package._links = {"type":{"href":"https://virtual.wintersandassociates.com/entity/page"}}
+    var package = {
+      '_links': {
+        'type': {
+          'href': 'https://virtual.wintersandassociates.com/rest/type/node/article'
+        }
+      },
+      'title': [
+        {
+          'value': 't1'
+        }
+      ],
+      'type': [
+        {
+          'target_id': "article"
+        }
+      ],
+    };
 
-    ajaxExecute = Drupal.ajax({
-      url: "https://virtual.wintersandassociates.com/entity/node",
+    var ajaxExecute = $.ajax({
+      url: "https://virtual.wintersandassociates.com/node?_format=json",
       method: "POST",
       headers: {
-        data: JSON.stringify(package),
-        "Accept": "application/json",
-        "Content-Type": "application/json"
+        // 'Accept': "application/json",
+        "X-CSRF-Token": csrf_token,
+        'Content-Type': "application/json"
       },
+      data: JSON.stringify(package),
       success: function(data, status, xhr) {
         console.log("Created the node!");
         console.log(data);
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log("Status: " + textStatus);
+        console.log("Error: " + errorThrown);
+        console.log(XMLHttpRequest);
+      }
+    });
+
+    ajaxExecute.done(function() {
+      alert( "success" );
+    })
+    .fail(function() {
+        alert( "error" );
+    })
+  }
+
+
+
+
+
+  function getCsrfToken(callback) {
+    jQuery
+      .get(Drupal.url('session/token'))
+      .done(function (data) {
+        var csrfToken = data;
+        callback(csrfToken);
+      });
+  }
+
+  function postNode(csrfToken, node) {
+    jQuery.ajax({
+      url: 'https://virtual.wintersandassociates.com/node?_format=json',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken
+      },
+      data: JSON.stringify(node),
+      success: function (node) {
+        console.log(node);
       }
     });
   }
 
-  var ajaxExecute;
-  $(document).on("click", ".view-icons-on-this-board .views-row", function(event) {
-    console.log("Clicked on an icon.");
-    createNode();
-    // getNode();
-  });
+  var newNode = {
+    // '_links': {
+    //   'type': {
+    //     'href': 'https://virtual.wintersandassociates.com/rest/type/node/basic_page'
+    //   }
+    // },
+    'type': [{
+      'target_id': 'basic_page'
+    }],
+    'title': {
+      'value': 'Example node title'
+    }
+  };
 
-  ajaxExecute.done(function() {
-    alert( "success" );
-  })
-  .fail(function() {
-      alert( "error" );
-  })
+
+
+
+
+
+
+
+  $(document).on("click", ".view-icons-on-this-board .views-row", function(event) {
+    // console.log("Clicked on an icon.");
+    // getNode();
+    //createNode();
+    // getCsrfToken(function (csrfToken) {
+    //   postNode(csrfToken, newNode);
+    // });
+  });
   ///////////////////////////////
   // End AJAX node create/view //
   ///////////////////////////////
@@ -471,6 +571,7 @@
 
 
 
+
   ////////////////////////////////////////////////////////
   // Gridly (https://github.com/ksylvest/jquery-gridly) //
   ////////////////////////////////////////////////////////
@@ -545,15 +646,20 @@
   // Todo: merge this into the icon formatter.
   function formatViewBoardNode() {
     if ($('.view-icons-on-this-board').length > 0) {
-      var num_columns = $('.field--name-field-number-of-columns .field__item').text();
+      var num_columns = 8;
+      // if ($('.field--name-field-number-of-columns .field__item').text() != "8") {
+        // num_columns = $('.field--name-field-number-of-columns .field__item').text();
+      // }
+
       var max_width_total = $('.view-icons-on-this-board').width();
       var max_width_individual =  Math.floor(max_width_total / num_columns);
-      // console.log("Formatting the icons on this board to " + max_width_individual + "px square.");
-
-      // this ensures the icon is a square.
+      // this ensures all icons are the same square size
+      console.log("Formatting the icons on this board to " + max_width_individual + "px square.");
       $('.view-icons-on-this-board .views-row').css('height', max_width_individual).css('width', max_width_individual);
 
+
       $('.view-icons-on-this-board .views-row').each(function() {
+
         // 1. Change the img src to the background.
         var image_url = $(this).find("img").attr("src");
         $(this).find('.views-field-field-image').css('background-image', 'url("' + image_url + '")');
@@ -581,10 +687,10 @@
         var image_width_as_percentage = image_size_native / $(this).width() * 100;
 
         // This is just for debug purposes. In production, it doesn't matter if the image exists or not.
-        // if (image_size_native_width) {
-        //   console.log("Native icon size: " + image_size_native_width + " by " + image_size_native_height);
-        //   console.log("Icon size: " + image_width_as_percentage);
-        // }
+        if (image_size_native_width) {
+          console.log("Native icon size: " + image_size_native_width + " by " + image_size_native_height);
+          console.log("Icon size: " + image_width_as_percentage);
+        }
 
         $(this).find('.views-field-field-image').css('background-size', 33.33 * image_scale + "%"); // default image width is 33.33% of the icon (.views-row).
 
@@ -597,7 +703,7 @@
         // 4. Make sure the text doesn't overflow,
         //    Then run fittext on them.
         $(".views-field-field-text-above-icon, .views-field-field-text-below-icon").each(function() {
-          $(this).width(max_width_individual);
+          $(this).width(max_width_individual - 10);
           $(this).fitText();
         });
 
@@ -611,6 +717,9 @@
   function formatIconViews() {
     console.log("formatting icon views.");
 
+    // if ($('.view-icons-on-this-board.view-better-icon-lookup').length == 0) {
+    //   $('.view-icons-on-this-board').addClass('view-better-icon-lookup');
+    // }
     // if ($('.view-better-icon-lookup').length > 0) {
       // var num_columns = $('.field--name-field-number-of-columns .field__item').text();
       // var max_width_total = $('.view-icons-on-this-board').width();
@@ -619,9 +728,10 @@
 
       // this ensures the icon is a square.
       var icon_height = $('.view-better-icon-lookup .views-row:first-child').width();
-      $('.view-better-icon-lookup .views-row .icon-and-text, .view-better-icon-lookup .views-field-field-image').css('height', icon_height);
+      $('.view-better-icon-lookup .icon-and-text').css('width', icon_height);
+      $('.view-better-icon-lookup .views-field-field-image, .view-better-icon-lookup .icon-and-text').css('height', icon_height);
 
-      $('.view-better-icon-lookup .views-row').each(function() {
+      $('.view-better-icon-lookup .views-row, .view-icons-on-this-board .views-row').each(function() {
         // 1. Change the img src to the background.
         var image_url = $(this).find("img").attr("src");
         $(this).find('.views-field-field-image').css('background-image', 'url("' + image_url + '")');
@@ -629,7 +739,12 @@
         // If there's no image, just make the text flow rather than be absolutely
         // positioned to the top and bottom.
         if (!image_url) {
-          $(this).find('.icon-and-text').addClass("no-image");
+          if ($(this).find('.icon-and-text').length > 0) {
+            $(this).find('.icon-and-text').addClass("no-image");
+          }
+          else {
+            $(this).children().wrapAll('<div class="icon-and-text"></div>');
+          }
         }
 
         // 2. Set the background scale of this icon.
@@ -664,6 +779,11 @@
 
         // 4. Make sure the text doesn't overflow,
         //    Then run fittext on them.
+        // console.log("Icon height: " + icon_height);
+        // if (icon_height == 0) {
+        //   icon_height = $(this).width();
+        //   console.log("Setting icon_height to " + icon_height);
+        // }
         $(".views-field-field-text-above-icon, .views-field-field-text-below-icon").each(function() {
           $(this).width(icon_height);
           $(this).fitText();

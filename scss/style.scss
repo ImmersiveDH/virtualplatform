@@ -808,3 +808,51 @@ body.path-icons {
     }
   }
 }
+// End admin features
+
+
+
+
+// Start full-screen throbber
+// This always runs, and is only toggled on when we have the elements on the screen after they appear.
+// this requires the throbber block be added to a region (ideally the footer)
+#full-screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0,0,0,0.25);
+  color: white;
+
+  // hidden by default;
+  // JavaScript toggles .loading-spinner on and off on <body>
+  display: none;
+  .loading-spinner & {
+    display: flex;
+  }
+}
+
+.full-screen-container {
+  // top: 0;
+  // left: 0;
+  // height: 100vh;
+  // width: 100vw;
+  margin: 0;
+  position: absolute;
+  z-index: 1000;
+  top: 50%;
+  left: calc(50% - 35px);
+  width: 70px;
+  height: 70px;
+  font-size: 60px;
+
+  .spinner-border {
+    width: 100%;
+    height: 100%;
+    .sr-only {
+      display: none;
+    }
+  }
+}
+// end full-screen throbber/spinner overlay
