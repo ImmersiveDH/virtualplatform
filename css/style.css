@@ -12934,6 +12934,23 @@ footer {
   margin-top: 2em;
 }
 
+#node-board-edit-form > div,
+#node-board-form > div {
+  width: 100%;
+  float: left;
+}
+
+.views-field-status,
+.views-field-field-public {
+  display: none;
+}
+body.admin .views-field-status, body.role-admin .views-field-status,
+body.admin .views-field-field-public,
+body.role-admin .views-field-field-public {
+  display: table-cell;
+  border: 1px solid red;
+}
+
 #node-board-edit-form #edit-body-wrapper,
 #node-board-edit-form #edit-path-wrapper,
 #node-board-edit-form .form-type-vertical-tabs {
@@ -13155,7 +13172,8 @@ body.full-screen-preview footer,
 body.full-screen-preview nav,
 body.full-screen-preview aside,
 body.full-screen-preview .alert,
-body.full-screen-preview #block-virtualplatform-content {
+body.full-screen-preview #block-virtualplatform-content,
+body.full-screen-preview #block-views-block-board-usage-stats-block-1 {
   display: none;
 }
 body.full-screen-preview #block-views-block-icons-on-this-board-block-1 {
@@ -13450,6 +13468,50 @@ body.path-icons.admin .form-item-field-public-value {
   display: block;
 }
 
+.page-node-type-interaction .field--type-integer {
+  display: none;
+}
+
+#block-virtualplatform-content {
+  position: relative;
+  margin-bottom: 2em;
+}
+
+.interaction-launch-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.field--name-field-interaction-start,
+.field--name-field-interaction-end,
+#block-views-block-this-node-id-block-1 {
+  width: 100%;
+  float: left;
+  display: none;
+}
+body.admin .field--name-field-interaction-start, body.role-admin .field--name-field-interaction-start,
+body.admin .field--name-field-interaction-end,
+body.role-admin .field--name-field-interaction-end,
+body.admin #block-views-block-this-node-id-block-1,
+body.role-admin #block-views-block-this-node-id-block-1 {
+  display: block;
+  border: 1px solid red;
+}
+
+#block-views-block-board-usage-stats-block-1 {
+  width: 100%;
+  float: left;
+}
+#block-views-block-board-usage-stats-block-1 .views-label {
+  font-weight: bold;
+}
+#block-views-block-board-usage-stats-block-1 .field-content {
+  display: inline;
+  padding-left: 0.5em;
+}
+
 #full-screen-overlay {
   position: fixed;
   top: 0;
@@ -13458,7 +13520,11 @@ body.path-icons.admin .form-item-field-public-value {
   width: 100vw;
   background: rgba(0, 0, 0, 0.25);
   color: white;
+  user-select: none;
   display: none;
+}
+#full-screen-overlay * {
+  user-select: none;
 }
 .loading-spinner #full-screen-overlay {
   display: flex;

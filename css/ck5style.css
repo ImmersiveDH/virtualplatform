@@ -11086,6 +11086,21 @@ a > .ck-content code {
   border-top: 1px solid gray;
   margin-top: 2em;
 }
+.ck-content #node-board-edit-form > div,
+.ck-content #node-board-form > div {
+  width: 100%;
+  float: left;
+}
+.ck-content .views-field-status,
+.ck-content .views-field-field-public {
+  display: none;
+}
+body.admin .ck-content .views-field-status, body.role-admin .ck-content .views-field-status,
+body.admin .ck-content .views-field-field-public,
+body.role-admin .ck-content .views-field-field-public {
+  display: table-cell;
+  border: 1px solid red;
+}
 .ck-content #node-board-edit-form #edit-body-wrapper,
 .ck-content #node-board-edit-form #edit-path-wrapper,
 .ck-content #node-board-edit-form .form-type-vertical-tabs {
@@ -11284,7 +11299,8 @@ body.admin .ck-content #edit-field-icon-wrapper thead, body.role-admin .ck-conte
 .ck-content body.full-screen-preview nav,
 .ck-content body.full-screen-preview aside,
 .ck-content body.full-screen-preview .alert,
-.ck-content body.full-screen-preview #block-virtualplatform-content {
+.ck-content body.full-screen-preview #block-virtualplatform-content,
+.ck-content body.full-screen-preview #block-views-block-board-usage-stats-block-1 {
   display: none;
 }
 .ck-content body.full-screen-preview #block-views-block-icons-on-this-board-block-1 {
@@ -11571,6 +11587,45 @@ body.admin .ck-content #edit-field-icon-wrapper thead, body.role-admin .ck-conte
 .ck-content body.path-icons.admin .form-item-field-public-value {
   display: block;
 }
+.ck-content .page-node-type-interaction .field--type-integer {
+  display: none;
+}
+.ck-content #block-virtualplatform-content {
+  position: relative;
+  margin-bottom: 2em;
+}
+.ck-content .interaction-launch-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+}
+.ck-content .field--name-field-interaction-start,
+.ck-content .field--name-field-interaction-end,
+.ck-content #block-views-block-this-node-id-block-1 {
+  width: 100%;
+  float: left;
+  display: none;
+}
+body.admin .ck-content .field--name-field-interaction-start, body.role-admin .ck-content .field--name-field-interaction-start,
+body.admin .ck-content .field--name-field-interaction-end,
+body.role-admin .ck-content .field--name-field-interaction-end,
+body.admin .ck-content #block-views-block-this-node-id-block-1,
+body.role-admin .ck-content #block-views-block-this-node-id-block-1 {
+  display: block;
+  border: 1px solid red;
+}
+.ck-content #block-views-block-board-usage-stats-block-1 {
+  width: 100%;
+  float: left;
+}
+.ck-content #block-views-block-board-usage-stats-block-1 .views-label {
+  font-weight: bold;
+}
+.ck-content #block-views-block-board-usage-stats-block-1 .field-content {
+  display: inline;
+  padding-left: 0.5em;
+}
 .ck-content #full-screen-overlay {
   position: fixed;
   top: 0;
@@ -11579,7 +11634,11 @@ body.admin .ck-content #edit-field-icon-wrapper thead, body.role-admin .ck-conte
   width: 100vw;
   background: rgba(0, 0, 0, 0.25);
   color: white;
+  user-select: none;
   display: none;
+}
+.ck-content #full-screen-overlay * {
+  user-select: none;
 }
 .loading-spinner .ck-content #full-screen-overlay {
   display: flex;

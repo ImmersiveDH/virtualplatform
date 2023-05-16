@@ -86,6 +86,23 @@ footer {
 }
 // End footer
 
+#node-board-edit-form,
+#node-board-form {
+  > div {
+    width: 100%;
+    float: left;
+  }
+}
+
+.views-field-status,
+.views-field-field-public {
+  display: none;
+  body.admin &,
+  body.role-admin & {
+    display: table-cell;
+    border: 1px solid red;
+  }
+}
 
 //////////////////////////////
 // START board editing page //
@@ -93,6 +110,7 @@ footer {
 #node-board-edit-form {
 #edit-body-wrapper,
 #edit-path-wrapper,
+
   .form-type-vertical-tabs {
     display: none;
   }
@@ -428,7 +446,8 @@ body.full-screen-preview {
   nav,
   aside,
   .alert,
-  #block-virtualplatform-content {
+  #block-virtualplatform-content,
+  #block-views-block-board-usage-stats-block-1 {
     display: none;
   }
 
@@ -810,6 +829,51 @@ body.path-icons {
 }
 // End admin features
 
+// start interactions
+.page-node-type-interaction {
+  .field--type-integer {
+    display: none;
+  }
+}
+#block-virtualplatform-content {
+  position: relative;
+  margin-bottom: 2em;
+}
+.interaction-launch-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.field--name-field-interaction-start,
+.field--name-field-interaction-end,
+#block-views-block-this-node-id-block-1 {
+  width: 100%;
+  float: left;
+  display: none;
+  body.admin &,
+  body.role-admin & {
+    display: block;
+    border: 1px solid red;
+  }
+}
+
+// Start board analytics section on Interaction nodes
+#block-views-block-board-usage-stats-block-1 {
+  width: 100%;
+  float: left;
+
+  .views-label  {
+    font-weight: bold;
+  }
+
+  .field-content {
+    display: inline;
+    padding-left: 0.5em;
+  }
+}
+// End interactions
 
 
 
@@ -824,6 +888,11 @@ body.path-icons {
   width: 100vw;
   background: rgba(0,0,0,0.25);
   color: white;
+  user-select: none;
+
+  * {
+    user-select: none;
+  }
 
   // hidden by default;
   // JavaScript toggles .loading-spinner on and off on <body>

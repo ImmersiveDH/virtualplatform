@@ -13,27 +13,30 @@
 
 
   $(document).ready(function() {
-    // var url_found = UrlExists("https://virtual.wintersandassociates.com/sdfsadfs");
-    // if (!url_found) {
-    //   console.log("this URL doesn't exist.");
-    // }
+    // const better_icon_lookup_element = document.querySelector(".region-content");
 
-    // if ($(".view-better-icon-lookup").length > 0) {
-      // const better_icon_lookup_element = document.querySelector(".view-better-icon-lookup");
+    // if ($('#inline-entity-form-field_icon-form').length > 0) {
+    //   const better_icon_lookup_element = document.querySelector("#inline-entity-form-field_icon-form");
+
+    if ($('.path-icons .region-content').length > 0) {
+      const better_icon_lookup_element = document.querySelector(".path-icons .region-content");
+      const better_icon_lookup_observer = new MutationObserver(() => {
+        console.log("The Better Icon Lookup view changed.");
+        setupBetterIconLookupView();
+        formatIconViews();
+      });
+      better_icon_lookup_observer.observe(better_icon_lookup_element, {subtree: true, childList: true});
+    }
+
+    else if ($('#block-views-block-better-icon-lookup-block-1').length > 0) {
       const better_icon_lookup_element = document.querySelector(".region-content");
       const better_icon_lookup_observer = new MutationObserver(() => {
         console.log("The Better Icon Lookup view changed.");
         setupBetterIconLookupView();
         formatIconViews();
-
-        // var timeout_ajax;
-        // clearTimeout(timeout_ajax);
-        // timeout_ajax = setTimeout(formatIconViews, 50);
       });
       better_icon_lookup_observer.observe(better_icon_lookup_element, {subtree: true, childList: true});
-    // }
-
-
+    }
 
     ////////////////////////
     // Start color picker //
@@ -51,6 +54,20 @@
     //////////////////////
     // End color picker //
     //////////////////////
+
+
+    // start interactions
+    // add a button to interaction nodes. once clicked, it will send the current URL to the AAC simulator space.
+    $('.page-node-type-interaction #block-virtualplatform-content').append('<div class="interaction-launch-controls"><button class="btn button btn-primary launch-environment">Open in the virtual environment</button></div>')
+    $(document).on("click", ".launch-environment", function(event) {
+      // var board_url = $('.field--name-field-board .field__item a').attr('href');
+      // if (board_url.indexOf("http") === -1) {
+      //   board_url = window.location.protocol + '//' + window.location.hostname + board_url + "\#full-screen";
+      // }
+      var current_url = window.location;
+      console.log("Loading " + current_url);
+      window.open("https://aac-simulator.glitch.me?node=" + current_url);
+    });
 
 
 
@@ -140,6 +157,7 @@
 
     // 1. Create the container for the draggable grid.
     $('#edit-field-icon-wrapper').after('<div id="draggable-grid" class="gridly"></div>');
+    // $('#node-board-edit-form').after('<div id="draggable-grid" class="gridly"></div>'); // this is for performance reasons.
 
     // 2. Watch the icon entity reference field for changes.
     // These happen via AJAX when we edit, delete, or create a new icon. (Or hit 'cancel' after we've done that.)
@@ -320,7 +338,17 @@
 
     // Send message to the parent...
     // 1. When hovering over an icon
-    if (isInIframe) {
+    // if (isInIframe) {
+      // $('iframe').parent().get(0).contentWindow.focus();
+      if (window.location !== window.parent.location) {
+        // turn full-screen on.
+        var current_location = window.location;
+        window.location = window.location + "#full-screen";
+        $('body').addClass('full-screen-preview');
+        formatViewBoardNode();
+        // console.log ("this is in an iframe, but not the way we tried before.");
+      }
+
       // communicate with iframes
       $('.view-icons-on-this-board .views-row').hover(
         function() {
@@ -334,7 +362,7 @@
           window.top.postMessage('icon-selected' + '|||' + 'none', '*');
         }
       );
-    }
+    // }
 
     // Recieve message from parent
     // 1. comes in the form of 'highlight-icon|||10'
@@ -353,8 +381,9 @@
   // Start AJAX node create/view //
   /////////////////////////////////
   function getNode() {
+    var this_node_json = {};
     var ajaxExecute = $.ajax({
-      url: "https://virtual.wintersandassociates.com/node/22?_format=json",
+      url: "https://virtual.wintersandassociates.com/node/76?_format=json",
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -362,66 +391,16 @@
       success: function(data, status, xhr) {
         console.log("Got the node!");
         console.log(data);
+        // this_node_json = data;
       }
     });
-    ajaxExecute.done(function() {
-      alert( "success" );
+    ajaxExecute.done(function() { // TODO: ACTUALLY USE THIS AND .fail
+      // alert( "success" );
     })
     .fail(function() {
-        alert( "error" );
+        // alert( "error" );
     })
   }
-
-  function createNode() {
-    var package = {
-      '_links': {
-        'type': {
-          'href': 'https://virtual.wintersandassociates.com/rest/type/node/article'
-        }
-      },
-      'title': [
-        {
-          'value': 't1'
-        }
-      ],
-      'type': [
-        {
-          'target_id': "article"
-        }
-      ],
-    };
-
-    var ajaxExecute = $.ajax({
-      url: "https://virtual.wintersandassociates.com/node?_format=json",
-      method: "POST",
-      headers: {
-        // 'Accept': "application/json",
-        "X-CSRF-Token": csrf_token,
-        'Content-Type': "application/json"
-      },
-      data: JSON.stringify(package),
-      success: function(data, status, xhr) {
-        console.log("Created the node!");
-        console.log(data);
-      },
-      error: function (XMLHttpRequest, textStatus, errorThrown) {
-        console.log("Status: " + textStatus);
-        console.log("Error: " + errorThrown);
-        console.log(XMLHttpRequest);
-      }
-    });
-
-    ajaxExecute.done(function() {
-      alert( "success" );
-    })
-    .fail(function() {
-        alert( "error" );
-    })
-  }
-
-
-
-
 
   function getCsrfToken(callback) {
     jQuery
@@ -461,20 +440,91 @@
     }
   };
 
+  function patchNode(csrfToken, node_id, node) {
+    jQuery.ajax({
+      url: 'https://virtual.wintersandassociates.com/node/' + node_id + '?_format=json',
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken
+      },
+      data: JSON.stringify(node),
+      success: function (node) {
+        console.log(node);
+      }
+    });
+  }
+
+  function incrementClickCount(this_icon_index, node_id) {
+    // 1. Get this Interaction node as an object.
+    // var this_node = getNode();
+    // console.log(this_node);
+    //
+    // // build the node object.
+    // //
+    // var clicks_field_in_db = 'field_clicks_on_icon_' + $(this).index();
+    // console.log("updating field " + clicks_field_in_db);
+    // var number_of_clicks = this_node.clicks_field_in_db;
+
+    // console.log(number_of_clicks);
+    var this_node_json = {};
+    var ajaxExecute = $.ajax({
+      url: 'https://virtual.wintersandassociates.com/node/' + node_id + '?_format=json',
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      success: function(data, status, xhr) {
+        // console.log("Got the node:");
+        // console.log(data);
+
+        var clicks_field_in_db = 'field_clicks_on_icon_' + this_icon_index;
+        var number_of_clicks = 0; // By default, an icon has been clicked 0 times.
+
+        // If it the resulting array isn't empty, we want to get the number of clicks.
+        if (data[clicks_field_in_db].length > 0) {
+          number_of_clicks = data[clicks_field_in_db][0].value;
+          console.log(data[clicks_field_in_db][0].value);
+        }
+
+        console.log("Number of times icon " + this_icon_index + " has been clicked: " + number_of_clicks);
+
+        // ACTUALLY INCREMENT NUMBER OF CLICKS
+        number_of_clicks = number_of_clicks + 1;
+
+        var new_click_object = {value: number_of_clicks};
+        console.log(new_click_object);
+
+        // data.[clicks_field_in_db][new_click_object];
+
+        $.extend(true, data, {
+          [clicks_field_in_db]: new_click_object
+        });
+        console.log(data);
+
+        // now it's time to update the node!
+        getCsrfToken(function (csrfToken) {
+          patchNode(csrfToken, node_id, data);
+        });
+      }
+    });
+    ajaxExecute.done(function() { // TODO: ACTUALLY USE THIS AND .fail
+      // alert( "success" );
+    })
+    .fail(function() {
+        // alert( "error" );
+    })
 
 
 
+  }
 
-
-
-
-  $(document).on("click", ".view-icons-on-this-board .views-row", function(event) {
-    // console.log("Clicked on an icon.");
-    // getNode();
-    //createNode();
-    // getCsrfToken(function (csrfToken) {
-    //   postNode(csrfToken, newNode);
-    // });
+  // only allowe clicks on icons when we're in full-screen mode ON AN INTERACTION NODE.
+  $(document).on("click", ".page-node-type-interaction.full-screen-preview .view-icons-on-this-board .views-row", function(event) {
+    console.log("Clicked on an icon.");
+    var this_node_id = $('.view-this-node-id .views-field-nid').text();
+    var this_icon_index = $(this).index() + 1;
+    incrementClickCount(this_icon_index, this_node_id);
   });
   ///////////////////////////////
   // End AJAX node create/view //
@@ -687,10 +737,10 @@
         var image_width_as_percentage = image_size_native / $(this).width() * 100;
 
         // This is just for debug purposes. In production, it doesn't matter if the image exists or not.
-        if (image_size_native_width) {
-          console.log("Native icon size: " + image_size_native_width + " by " + image_size_native_height);
-          console.log("Icon size: " + image_width_as_percentage);
-        }
+        // if (image_size_native_width) {
+        //   console.log("Native icon size: " + image_size_native_width + " by " + image_size_native_height);
+        //   console.log("Icon size: " + image_width_as_percentage);
+        // }
 
         $(this).find('.views-field-field-image').css('background-size', 33.33 * image_scale + "%"); // default image width is 33.33% of the icon (.views-row).
 
@@ -726,69 +776,96 @@
       // var max_width_individual =  Math.floor(max_width_total / num_columns);
       // console.log("Formatting the icons on this board to " + max_width_individual + "px square.");
 
+      // Add the Bootstrap tooltips to each icon: https://getbootstrap.com/docs/5.0/components/tooltips/
+      // $('.views-better-icon-lookup .views-row').attr({
+      //   'data-bs-toggle': "tooltip",
+      //   'data-bs-html': "true",
+      //   'title': "<em>Tooltip</em> <u>with</u> <b>HTML</b>"
+      // });
+
       // this ensures the icon is a square.
       var icon_height = $('.view-better-icon-lookup .views-row:first-child').width();
       $('.view-better-icon-lookup .icon-and-text').css('width', icon_height);
       $('.view-better-icon-lookup .views-field-field-image, .view-better-icon-lookup .icon-and-text').css('height', icon_height);
 
       $('.view-better-icon-lookup .views-row, .view-icons-on-this-board .views-row').each(function() {
-        // 1. Change the img src to the background.
-        var image_url = $(this).find("img").attr("src");
-        $(this).find('.views-field-field-image').css('background-image', 'url("' + image_url + '")');
+        // 0; is this supposed to be hidden altogether?
+        // First, check if this is unpublished.
+        if ($(this).find('.views-field-status .field-content').text().trim() == "False") {
+          $(this).remove();
+          console.log("This icon is unpublished and isn't supposed to be here!");
+        }
+        // Next, check if it's supposed to be public in the first place.
+        else if ($(this).find('.views-field-field-public .field-content').text().trim() == "False") {
+          $(this).remove();
+          console.log("This icon is not set to be public and isn't supposed to be here!");
+        }
+        else {
+          console.log("we are allowed to see this button.");
 
-        // If there's no image, just make the text flow rather than be absolutely
-        // positioned to the top and bottom.
-        if (!image_url) {
-          if ($(this).find('.icon-and-text').length > 0) {
-            $(this).find('.icon-and-text').addClass("no-image");
+          // 1. Change the img src to the background.
+          var image_url = $(this).find("img").attr("src");
+          $(this).find('.views-field-field-image').css('background-image', 'url("' + image_url + '")');
+
+          // If there's no image, just make the text flow rather than be absolutely
+          // positioned to the top and bottom.
+          if (!image_url) {
+            if ($(this).find('.icon-and-text').length > 0) {
+              $(this).find('.icon-and-text').addClass("no-image");
+            }
+            else {
+              $(this).children().wrapAll('<div class="icon-and-text"></div>');
+            }
           }
-          else {
-            $(this).children().wrapAll('<div class="icon-and-text"></div>');
+
+          // 2. Set the background scale of this icon.
+          var image_scale = $(this).find('.views-field-field-image-scale .field-content').text();
+          if (!image_scale) { // this probably isn't necessary any longer. All icons should have a scale by default.
+            image_scale = 1;
           }
+          var image_size_native_width = $(this).find('img').attr('width');
+          var image_size_native_height = $(this).find('img').attr('height');
+
+          var image_size_native = image_size_native_width;
+          if (image_size_native_height > image_size_native_width) {
+            image_size_native = image_size_native_height;
+          }
+
+          // get the width of the current icon tile (.views-row), then calculate the proportion of the tile at 1000px wide.
+          var image_width_as_percentage = image_size_native / $(this).find('.views-field-field-image').width() * 100;
+
+          // This is just for debug purposes. In production, it doesn't matter if the image exists or not.
+          // if (image_size_native_width) {
+          //   console.log("Native icon size: " + image_size_native_width + " by " + image_size_native_height);
+          //   console.log("Icon size: " + image_width_as_percentage);
+          // }
+
+          $(this).find('.views-field-field-image').css('background-size', 33.33 * image_scale + "%"); // default image width is 33.33% of the icon (.views-row).
+
+          // 3. Set the background colour of this icon.
+          var background_color_for_this_icon = $(this).find('.views-field-field-color .field-content').text();
+          $(this).find('.icon-and-text').css("background-color", background_color_for_this_icon);
+          // Set text color based on background color.
+          $(this).find('.icon-and-text').css("color", getTextColorBasedOnBackgroundColor(background_color_for_this_icon));
+
+          // 4. Make sure the text doesn't overflow,
+          //    Then run fittext on them.
+          // console.log("Icon height: " + icon_height);
+          // if (icon_height == 0) {
+          //   icon_height = $(this).width();
+          //   console.log("Setting icon_height to " + icon_height);
+          // }
+          // when does this actually run?
+          $(".views-field-field-text-above-icon, .views-field-field-text-below-icon").each(function() {
+            // $(this).width(icon_height);
+            // $(this).fitText();
+          });
         }
-
-        // 2. Set the background scale of this icon.
-        var image_scale = $(this).find('.views-field-field-image-scale .field-content').text();
-        if (!image_scale) { // this probably isn't necessary any longer. All icons should have a scale by default.
-          image_scale = 1;
-        }
-        var image_size_native_width = $(this).find('img').attr('width');
-        var image_size_native_height = $(this).find('img').attr('height');
-
-        var image_size_native = image_size_native_width;
-        if (image_size_native_height > image_size_native_width) {
-          image_size_native = image_size_native_height;
-        }
-
-        // get the width of the current icon tile (.views-row), then calculate the proportion of the tile at 1000px wide.
-        var image_width_as_percentage = image_size_native / $(this).find('.views-field-field-image').width() * 100;
-
-        // This is just for debug purposes. In production, it doesn't matter if the image exists or not.
-        // if (image_size_native_width) {
-        //   console.log("Native icon size: " + image_size_native_width + " by " + image_size_native_height);
-        //   console.log("Icon size: " + image_width_as_percentage);
-        // }
-
-        $(this).find('.views-field-field-image').css('background-size', 33.33 * image_scale + "%"); // default image width is 33.33% of the icon (.views-row).
-
-        // 3. Set the background colour of this icon.
-        var background_color_for_this_icon = $(this).find('.views-field-field-color .field-content').text();
-        $(this).find('.icon-and-text').css("background-color", background_color_for_this_icon);
-        // Set text color based on background color.
-        $(this).find('.icon-and-text').css("color", getTextColorBasedOnBackgroundColor(background_color_for_this_icon));
-
-        // 4. Make sure the text doesn't overflow,
-        //    Then run fittext on them.
-        // console.log("Icon height: " + icon_height);
-        // if (icon_height == 0) {
-        //   icon_height = $(this).width();
-        //   console.log("Setting icon_height to " + icon_height);
-        // }
-        $(".views-field-field-text-above-icon, .views-field-field-text-below-icon").each(function() {
-          $(this).width(icon_height);
-          $(this).fitText();
-        });
       });
+
+      // if ($('.view-better-icon-lookup .views-row').length == 0) {
+      //   $('.view-better-icon-lookup .view-content').text("No buttons found.");
+      // }
     // }
   }
 
@@ -868,11 +945,19 @@
   // Check if we're in an iframe
   function isInIframe() {
     if (window.location !== window.parent.location) {
+      console.log("this is in an iframe.");
       return true;
     } else {
       return false;
     }
   }
+  // function isInIframe () {
+  //   try {
+  //       return window.self !== window.top;
+  //   } catch (e) {
+  //       return true;
+  //   }
+  // }
 
 
 
